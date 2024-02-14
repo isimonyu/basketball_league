@@ -45,6 +45,31 @@ SELECT * FROM Games;
 -- Retrieve ALL Games by teamID
 SELECT * FROM Games JOIN TeamsGames ON Games.gameID = TeamsGames.gameID WHERE TeamsGames.teamID = :teamIDInput;
 
+SELECT 
+    PlayersGamesStats.statID,
+    PlayersGamesStats.gameID,
+    Players.playerName AS playerName,
+    PlayersGamesStats.point AS points,
+    PlayersGamesStats.assist AS assists,
+    PlayersGamesStats.rebound AS rebounds,
+    CONCAT(PlayersGamesStats.fgMake, '/', PlayersGamesStats.fgAttempt) AS fieldGoals,
+    CONCAT(PlayersGamesStats.ftMake, '/', PlayersGamesStats.ftAttempt) AS freeThrows,
+    CONCAT(PlayersGamesStats.threePointMake, '/', PlayersGamesStats.threePointAttempt) AS threePoints,
+    PlayersGamesStats.block AS blocks,
+    PlayersGamesStats.steal AS steals,
+    PlayersGamesStats.playerFoul AS fouls,
+    PlayersGamesStats.playerMinute AS minutes
+FROM 
+    Players
+JOIN 
+    PlayersGamesStats ON Players.playerID = PlayersGamesStats.playerID
+JOIN 
+    Teams ON Players.teamID = Teams.teamID
+JOIN 
+    Games ON PlayersGamesStats.gameID = Games.gameID
+WHERE 
+    Teams.teamID = 1
+
 
 
 
