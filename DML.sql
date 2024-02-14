@@ -68,7 +68,7 @@ JOIN
 JOIN 
     Games ON PlayersGamesStats.gameID = Games.gameID
 WHERE 
-    Teams.teamID = 1
+    Teams.teamID = :teamIDinput and PlayersGamesStats.statID = :statIDinput
 
 
 
