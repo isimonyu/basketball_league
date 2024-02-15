@@ -10,21 +10,24 @@ Game 5 - https://www.espn.com/nba/boxscore/_/gameId/401585248
 Game 6 - https://www.espn.com/nba/boxscore/_/gameId/401585160
 */
 
+-- Set FK Checks off to drop tables
 SET FOREIGN_KEY_CHECKS=0;
 SET AUTOCOMMIT = 0;
 
-/* 
 
-    Create Tables
-
-*/
-
+-- Drops tables if they already exist in the DB
 DROP TABLE IF EXISTS Teams;
 DROP TABLE IF EXISTS Players;
 DROP TABLE IF EXISTS Coaches;
 DROP TABLE IF EXISTS Games;
 DROP TABLE IF EXISTS TeamsGames;
 DROP TABLE IF EXISTS PlayersGamesStats;
+
+/* 
+
+    Create Tables
+
+*/
 
 CREATE TABLE Teams (
     teamID INT AUTO_INCREMENT UNIQUE NOT NULL,
