@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Coach</title>
+  </head>
+  <body>
+    <h1>Editing Coach:</h1>
+    <form action="index.html">
+      <label for="name">Coach Name:</label>
+      <input type="text" name="name" placeholder="Mike Nurse" />
+      <br />
+
+      <label for="height">Coaching Style:</label>
+      <input type="text" name="style" placeholder="Triangle" />
+      <br />
+
+      <label for="position">Years of Experience:</label>
+      <input type="text" name="years" placeholder="3" />
+      <br />
+
+      <label for="number">Total Wins:</label>
+      <input type="text" name="win" placeholder="10" />
+      <br />
+
+      <label for="number">Total Losses:</label>
+      <input type="text" name="loss" placeholder="20" />
+      <br />
+
+      <label for="teams">Team:</label>
+      <select name="teams" id="teams">
+        <option value="" disabled hidden>--Select One--</option>
+        <option value="1" selected>Wizards</option>
+        <option value="2">Raptors</option>
+        <option value="3">Spurs</option>
+        <option value="4">Rockets</option>
+      </select>
+      <br />
+      <a href="index.html"> <button>Back</button></a>
+      <input type="submit" />
+    </form>
+  </body>
+</html>
