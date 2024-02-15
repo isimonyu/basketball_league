@@ -1,6 +1,11 @@
+-- Query for select, insert, delete, and update functionality with 
+-- colon : character being used to denote the variables that will have data from
+-- the backend programming language
+
+-----------------------------------------------------
 /*
 
-Retrieve Queries
+SELECT Queries
 
 */
 
@@ -15,6 +20,9 @@ SELECT * FROM Players;
 
 -- Retrieve ALL Players by teamID
 SELECT playerID, playerName as name, playerHeight as height, playerPosition as position, playerNumber as number FROM Players LEFT JOIN Teams ON Players.teamID = Teams.teamID WHERE Teams.teamID = :teamIDInput;
+
+-- Retrieve ALL Players by position
+SELECT playerID, Teams.teamName as team, playerName as name, playerHeight as height, playerPosition as position, playerNumber as number FROM Players JOIN Teams ON Players.teamID = Teams.teamID WHERE Players.playerPosition = "point guard";
 
 -- Retrieve all stats by playerID
 SELECT statID, gameID, point as points, assist as assists, rebound as rebounds, CONCAT(fgMake, '/', fgAttempt) as fieldGoals, CONCAT(ftMake, '/', ftAttempt) as freeThrows, CONCAT(threePointMake, '/', threePointAttempt) as threePoints, block as blocks, steal as steals, playerFoul as fouls, playerMinute as minutes 
@@ -45,6 +53,7 @@ SELECT * FROM Games;
 -- Retrieve ALL Games by teamID
 SELECT * FROM Games JOIN TeamsGames ON Games.gameID = TeamsGames.gameID WHERE TeamsGames.teamID = :teamIDInput;
 
+-- Retrieve all player stats by teamID and gameID
 SELECT 
     PlayersGamesStats.statID,
     PlayersGamesStats.gameID,
@@ -68,17 +77,17 @@ JOIN
 JOIN 
     Games ON PlayersGamesStats.gameID = Games.gameID
 WHERE 
-    Teams.teamID = :teamIDinput and PlayersGamesStats.statID = :statIDinput
-
-
-
-
-
--- Query for select, insert, delete, and update functionality with 
--- colon : character being used to denote the variables that will have data from
--- the backend programming language
+    Teams.teamID = :teamIDinput and Games.gameID = :gameIDInput
 
 -----------------------------------------------------
+
+/*
+
+
+INSERT/UPDATE/DELETE For each Table
+
+
+*/
 
 -- Inserting a new team 
 
