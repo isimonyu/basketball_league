@@ -3,11 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../main.css" />
     <title>Player's Stats</title>
   </head>
   <body>
     <h1>Player's Stats</h1>
     <nav>
+      <a href="../index.html">Home</a>
       <a href="../players/index.html">Players</a>
       <a href="../coaches/index.html">Coaches</a>
       <a href="../teams/index.html">Teams</a>
@@ -18,21 +20,25 @@
     <br />
     <a href="create.html"><button>Add New</button></a>
     <br />
-    <table>
+    <label for="position">Filter by Player Name:</label>
+    <input type="text">
+    </select>
+    <table class = "infoTable">
       <tr>
-        <th>statID</th>
-        <th>gameID</th>
-        <th>playerID</th>
-        <th>assist</th>
-        <th>points</th>
-        <th>rebounds</th>
-        <th>fgMake/fgAttempt</th>
-        <th>ftMake/fgAttempt</th>
-        <th>threePointMake/threePointAttempt</th>
-        <th>block</th>
-        <th>steal</th>
-        <th>playerFoul</th>
-        <th>playerMinute</th>
+        <th>Stat ID</th>
+        <th>Game ID</th>
+        <th>Player ID</th>
+        <th>Assists</th>
+        <th>Points</th>
+        <th>Rebounds</th>
+        <th>FGM/FGA</th>
+        <th>FTM/FTA</th>
+        <th>3PM/3PA</th>
+        <th>Blocks</th>
+        <th>Steals</th>
+        <th>Fouls</th>
+        <th>Minutes</th>
+        <th></th>
         <th></th>
       </tr>
       <tr>
