@@ -18,8 +18,11 @@ body {
 }
 
 
+th {
+    background-color: #f4acb8;
+}
 
-
+/*   ----- All tables  -----  */
 
 .infoTable {
     border-collapse: collapse;
@@ -32,6 +35,8 @@ body {
     padding: 8px;
     border: 1px solid black;
 }
+
+
 
 
 
