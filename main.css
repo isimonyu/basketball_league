@@ -1,6 +1,6 @@
 /*   ----- Imports  -----  */
 /* FONT STYLES go here */
-@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@400;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@400;600;800&display=swap');
 
 /*   ----- Variables  -----  */
 :root {
@@ -15,6 +15,45 @@ body {
       margin: 0 5%;
       padding: 0;
       max-width: 100%;
+      text-align: center;
+}
+
+a {
+    text-decoration: none;
+    color: var(--lightPurp);
+}
+
+nav {
+    border-bottom: 2px solid #9e87c8;
+    height: 2rem;
+}
+
+nav > a {
+    margin: 0 1rem;
+    text-decoration: none;
+    font-weight: 600;
+    color: var(--darkColor);
+}
+
+nav > a:hover {
+    color: var(--lightPurp);
+}
+
+
+/*   ----- All tables  -----  */
+
+table {
+    display: flex;
+    width: 100%;
+    overflow-x: scroll;
+    border-collapse: collapse;
+    justify-content: center;
+    margin: 1rem;
+}
+
+.stats-table {
+    display: flex;
+    justify-content: left;
 }
 
 
@@ -22,21 +61,77 @@ th {
     background-color: #f4acb8;
 }
 
-/*   ----- All tables  -----  */
-
-.infoTable {
-    border-collapse: collapse;
-}
-
-
-.infoTable th,
-.infoTable td { 
+th, td { 
     text-align: center;
     padding: 8px;
     border: 1px solid black;
 }
 
+.form-container {
+    text-align: left;
+    margin: 0 auto;
+    max-width: 50vw;
+}
+
+  .button-container {
+    display: flex;
+    justify-content: center;
+
+  }
+  .table-buttons {
+    background-color: transparent;
+    cursor: pointer;
+    text-decoration: inherit;
+    font-size: 1rem;
+    padding: 0.7rem 2rem;
+    border: None
+}
+
+    .delete {
+    color: red;
+}
+
+    .edit {
+    color: rgb(86, 116, 116);
+}
+    
 
 
+  .button {
+    color: var(--darkColor);
+    font-size: 100%;
+    width: 10%;
+    height: 10%;
+    border-radius: 10px;
+    box-shadow: 1vw 1vh 35px rgba(0, 0, 0, 0.4);
+  }
 
+  .button > a {
+    color: var(--darkColor);
+  }
+
+  .button:hover {
+    cursor: pointer;
+  }
+
+  .add {
+    width: 20%;
+    box-shadow: none;
+  }
+
+  .add > a {
+    color: var(--lightPurp);
+    font-weight: 600;
+  }
+
+  .back {
+    margin: 2rem;
+  }
+  .submit {
+    margin: 2rem;
+    background-color: rgb(60, 211, 60);
+  }
+.schema {
+    width: 100%;
+}
 
