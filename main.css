@@ -1,0 +1,37 @@
+/*   ----- Imports  -----  */
+/* FONT STYLES go here */
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@400;800&display=swap');
+
+/*   ----- Variables  -----  */
+:root {
+    --darkColor: #1e1e1e;
+    --lightPurp: #9e87c8; 
+}
+
+body {
+    color: var(--darkColor);
+      font-family:'Kanit', sans-serif;
+      line-height: 150%;
+      margin: 0 5%;
+      padding: 0;
+      max-width: 100%;
+}
+
+
+
+
+
+.infoTable {
+    border-collapse: collapse;
+}
+
+
+.infoTable th,
+.infoTable td { 
+    text-align: center;
+    padding: 8px;
+    border: 1px solid black;
+}
+
+
+

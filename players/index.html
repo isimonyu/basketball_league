@@ -3,11 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../main.css" />
     <title>Players</title>
   </head>
   <body>
     <h1>Players</h1>
     <nav>
+      <a href="../index.html">Home</a>
       <a href="#">Players</a>
       <a href="../coaches/index.html">Coaches</a>
       <a href="../teams/index.html">Teams</a>
@@ -18,7 +20,16 @@
     <br />
     <a href="create.html"><button>Add New</button></a>
     <br />
-    <table>
+    <label for="position">Filter by Position:</label>
+    <select name="position" id="position">
+      <option value="" disabled hidden>--Select One--</option>
+      <option value="pg" selected>Point Guard</option>
+      <option value="sg">Shooting Guard</option>
+      <option value="sf">Small Forward</option>
+      <option value="pf">Power Foward</option>
+      <option value="c">Center</option>
+    </select>
+    <table class="infoTable">
       <tr>
         <th>ID</th>
         <th>Name</th>
@@ -35,7 +46,7 @@
         <td>73</td>
         <td>point guard</td>
         <td>2</td>
-        <td>1</td>
+        <td>Wizards</td>
         <td>
           <a href="edit.html"><button>Edit</button></a>
         </td>
@@ -49,7 +60,7 @@
         <td>75</td>
         <td>shooting guard</td>
         <td>13</td>
-        <td>1</td>
+        <td>Wizards</td>
         <td>
           <a href="edit.html"><button>Edit</button></a>
         </td>
@@ -63,7 +74,7 @@
         <td>74</td>
         <td>point guard</td>
         <td>6</td>
-        <td>1</td>
+        <td>Wizards</td>
         <td>
           <a href="edit.html"><button>Edit</button></a>
         </td>
