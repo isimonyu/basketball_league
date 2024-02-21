@@ -7,71 +7,83 @@
     <title>Edit Player Stats</title>
   </head>
   <body>
-    <h1>Editing Player Stats:</h1>
+    <h1>Player's Stats</h1>
+    <nav>
+      <a href="../index.html">Home</a>
+      <a href="../players/index.html">Players</a>
+      <a href="../coaches/index.html">Coaches</a>
+      <a href="../teams/index.html">Teams</a>
+      <a href="../games/index.html">Games</a>
+      <a href="index.html">Stats</a>
+    </nav>
+    <br />
+    <h2>Editing Player Stats:</h2>
     <form action="index.html">
-      <label for="playerID">Player ID:</label>
-      <input type="text" name="playerID" placeholder="1" />
-      <br />
+      <div class="form-container">
+        <label for="playerID">Player ID:</label>
+        <input type="text" name="playerID" placeholder="1" />
+        <br />
 
-      <label for="gameID">Game ID:</label>
-      <input type="text" name="gameID" placeholder="1" />
-      <br />
+        <label for="gameID">Game ID:</label>
+        <input type="text" name="gameID" placeholder="1" />
+        <br />
 
-      <label for="point">Player Points:</label>
-      <input type="text" name="point" placeholder="14" />
-      <br />
+        <label for="point">Player Points:</label>
+        <input type="text" name="point" placeholder="14" />
+        <br />
 
-      <label for="assist">Player Assists:</label>
-      <input type="text" name="assist" placeholder="5" />
-      <br />
+        <label for="assist">Player Assists:</label>
+        <input type="text" name="assist" placeholder="5" />
+        <br />
 
-      <label for="rebound">Player Rebounds:</label>
-      <input type="text" name="rebound" placeholder="4" />
-      <br />
+        <label for="rebound">Player Rebounds:</label>
+        <input type="text" name="rebound" placeholder="4" />
+        <br />
 
-      <label for="fgMake">Player Field Goal Makes:</label>
-      <input type="text" name="fgMake" placeholder="6" />
-      <br />
+        <label for="fgMake">Player Field Goal Makes:</label>
+        <input type="text" name="fgMake" placeholder="6" />
+        <br />
 
-      <label for="fgAttempt">Player Field Goal Attempts:</label>
-      <input type="text" name="fgAttempt" placeholder="8" />
-      <br />
+        <label for="fgAttempt">Player Field Goal Attempts:</label>
+        <input type="text" name="fgAttempt" placeholder="8" />
+        <br />
 
-      <label for="ftMake">Player Free Throw Makes:</label>
-      <input type="text" name="ftAttempt" placeholder="0" />
-      <br />
+        <label for="ftMake">Player Free Throw Makes:</label>
+        <input type="text" name="ftAttempt" placeholder="0" />
+        <br />
 
-      <label for="ftAttempt">Player Free Throw Attempts:</label>
-      <input type="text" name="ftMake" placeholder="0" />
-      <br />
+        <label for="ftAttempt">Player Free Throw Attempts:</label>
+        <input type="text" name="ftMake" placeholder="0" />
+        <br />
 
-      <label for="threeMake">Player Three Point Makes:</label>
-      <input type="text" name="threeMake" placeholder="2" />
-      <br />
+        <label for="threeMake">Player Three Point Makes:</label>
+        <input type="text" name="threeMake" placeholder="2" />
+        <br />
 
-      <label for="threeAttempt">Player Three Point Attempts:</label>
-      <input type="text" name="threeAttempt" placeholder="4" />
-      <br />
+        <label for="threeAttempt">Player Three Point Attempts:</label>
+        <input type="text" name="threeAttempt" placeholder="4" />
+        <br />
 
-      <label for="block">Player Blocks:</label>
-      <input type="text" name="block" placeholder="1" />
-      <br />
+        <label for="block">Player Blocks:</label>
+        <input type="text" name="block" placeholder="1" />
+        <br />
 
-      <label for="steal">Player Steals:</label>
-      <input type="text" name="steal" placeholder="0" />
-      <br />
+        <label for="steal">Player Steals:</label>
+        <input type="text" name="steal" placeholder="0" />
+        <br />
 
-      <label for="foul">Player Fouls:</label>
-      <input type="text" name="foul" placeholder="0" />
-      <br />
+        <label for="foul">Player Fouls:</label>
+        <input type="text" name="foul" placeholder="0" />
+        <br />
 
-      <label for="minute">Player Minutes:</label>
-      <input type="text" name="minute" placeholder="28" />
-      <br />
-
-      <br />
-      <a href="index.html"> <button>Back</button></a>
-      <input type="submit" />
+        <label for="minute">Player Minutes:</label>
+        <input type="text" name="minute" placeholder="28" />
+        <br />
+      </div>
+      <div class="button-container">
+        <button class="back button"><a href="index.html"> Back</a></button>
+        <input class="submit button" type="submit" />
+      </div>
     </form>
   </body>
 </html>
