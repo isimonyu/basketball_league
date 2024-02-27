@@ -24,6 +24,16 @@ app.get("/", function (req, res) {
   res.render("index"); // Note the call to render() and not send(). Using render() ensures the templating engine
 }); // will process this file, before sending the finished HTML to the client.
 
+app.get("/teams", function (req, res) {
+  let query1 = "SELECT * FROM Teams;";
+
+  db.pool.query(query1, function (error, rows, fields) {
+    // Execute the query
+
+    res.render("teams", { data: rows }); // Render the index.hbs file, and also send the renderer
+  });
+});
+
 /*
     LISTENER
 */
