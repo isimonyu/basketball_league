@@ -43,7 +43,6 @@ nav > a:hover {
 /*   ----- All tables  -----  */
 
 table {
-    display: flex;
     width: 100%;
     overflow-x: scroll;
     border-collapse: collapse;

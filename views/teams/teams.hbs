@@ -1,0 +1,39 @@
+<h1>Teams</h1>
+<nav>
+    <a href="/">Home</a>
+    <a href="players">Players</a>
+    <a href="coaches">Coaches</a>
+    <a href="#">Teams</a>
+    <a href="games">Games</a>
+    <a href="stats">Stats</a>
+</nav>
+<br />
+<a href="/teams/create"><button class="add button">Add New</button></a>
+<br />
+<table>
+    <tr>
+        {{#each data.[0]}}
+        <th>
+            {{@key}}
+        </th>
+        {{/each}}
+    <th></th>
+    <th></th>
+    </tr>
+    <tbody>
+        {{#each data}}
+        <tr>
+            <td>{{this.Name}}</td>
+            <td>{{this.City}}</td>
+            <td>
+          <a href="edit.html"
+            ><button class="table-buttons edit">Edit</button></a
+          >
+        </td>
+        <td>
+          <button class="table-buttons delete">Delete</button>
+        </td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>

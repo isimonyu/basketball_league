@@ -1,0 +1,52 @@
+<h1>Players</h1>
+    <nav>
+      <a href="/">Home</a>
+      <a href="#">Players</a>
+      <a href="coaches">Coaches</a>
+      <a href="teams">Teams</a>
+      <a href="games">Games</a>
+      <a href="stats">Stats</a>
+    </nav>
+    <br />
+    <a href="create.html"><button class="add button">Add New</button></a>
+    <br />
+    <label for="position">Filter by Position:</label>
+    <select name="position" id="position">
+      <option value="" disabled hidden>--Select One--</option>
+      <option value="pg" selected>Point Guard</option>
+      <option value="sg">Shooting Guard</option>
+      <option value="sf">Small Forward</option>
+      <option value="pf">Power Foward</option>
+      <option value="c">Center</option>
+    </select>
+    <table>
+      <tr>
+        {{#each data.[0]}}
+        <th>
+            {{@key}}
+        </th>
+        {{/each}}
+        <th></th>
+        <th></th>
+      </tr>
+      <tbody>
+        {{#each data}}
+        <tr>
+            <td>{{this.ID}}</td>
+            <td>{{this.Name}}</td>
+            <td>{{this.Height}}</td>
+            <td>{{this.Position}}</td>
+            <td>{{this.Number}}</td>
+            <td>{{this.Team}}</td>
+            <td>
+          <a href="edit.html"
+            ><button class="table-buttons edit">Edit</button></a
+          >
+        </td>
+        <td>
+          <button class="table-buttons delete">Delete</button>
+        </td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
