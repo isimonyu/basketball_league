@@ -1,11 +1,11 @@
 <h1>Player's Stats</h1>
     <nav>
-      <a href="../index.html">Home</a>
-      <a href="../players/index.html">Players</a>
-      <a href="../coaches/index.html">Coaches</a>
-      <a href="../teams/index.html">Teams</a>
-      <a href="#">Games</a>
-      <a href="../stats/index.html">Stats</a>
+      <a href="/">Home</a>
+      <a href="players">Players</a>
+      <a href="coaches">Coaches</a>
+      <a href="teams">Teams</a>
+      <a href="games">Games</a>
+      <a href="#">Stats</a>
     </nav>
     <br />
     <br />
@@ -13,6 +13,7 @@
 <br />
   <label for="position"> Filter by Player Name:</label>
     <input type="text" />
+<div class="table-container">
 <table>
     <tr>
         {{#each data.[0]}}
@@ -31,17 +32,18 @@
             <td>{{this.Points}}</td>
             <td>{{this.Assists}}</td>
             <td>{{this.Rebounds}}</td>
-            <td>{{this.FGM/FGA}}</td>
-            <td>{{this.FTM/FTA}}</td>
-            <td>{{this.3PM/3PA}}</td>
+            <td>{{this.FieldGoals}}</td>
+            <td>{{this.FreeThrows}}</td>
+            <td>{{this.ThreePoints}}</td>
             <td>{{this.Blocks}}</td>
             <td>{{this.Steals}}</td>
             <td>{{this.Fouls}}</td>
             <td>{{this.Minutes}}</td>
+            <td>
           <a href="edit.html"
             ><button class="table-buttons edit">Edit</button></a
           >
-        </td>
+            </td>
         <td>
           <button class="table-buttons delete">Delete</button>
         </td>
@@ -49,3 +51,4 @@
         {{/each}}
     </tbody>
 </table>
+    </div>
