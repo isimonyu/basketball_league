@@ -43,16 +43,15 @@ nav > a:hover {
 /*   ----- All tables  -----  */
 
 table {
-    width: 100%;
+    max-width: 100%;
     overflow-x: scroll;
     border-collapse: collapse;
-    justify-content: center;
     margin: 1rem;
 }
 
-.stats-table {
+.table-container {
     display: flex;
-    justify-content: left;
+    justify-content: center;
 }
 
 

@@ -36,7 +36,7 @@ app.get("/coaches", function (req, res) {
   let query1 =
     "SELECT coachID as ID, teamName as Team, coachName as Name, coachStyle as Style, yearsEXP as Experience, totalWin as Wins, totalLoss as Losses FROM Coaches JOIN Teams ON Coaches.teamID = Teams.teamID;";
   db.pool.query(query1, function (error, rows, fields) {
-    res.render("coaches", { data: rows });
+    res.render("coaches/coaches", { data: rows });
   });
 });
 
@@ -48,34 +48,47 @@ app.get("/teams", function (req, res) {
 });
 
 app.get("/games", function (req, res) {
-  let query1 = `SELECT Games.gameID as ID, Games.date as Date, H.teamName as 'Home Team', Games.homeTeamScore as 'Home Score', A.teamName as 'Away Team', Games.awayTeamScore as 'Away Score'
+  let query1 = `SELECT Games.gameID as ID, Games.date as Date, H.teamName as 'HomeTeam', Games.homeTeamScore as 'HomeScore', A.teamName as 'AwayTeam', Games.awayTeamScore as 'AwayScore'
   FROM Games
   JOIN TeamsGames Home ON Games.gameID  = Home.gameID AND Home.isHome = True
   JOIN Teams H ON Home.teamID = H.teamID
   JOIN TeamsGames Away ON Games.gameID  = Away.gameID AND Away.isHome = False
   JOIN Teams A ON Away.teamID = A.teamID;`;
   db.pool.query(query1, function (error, rows, fields) {
-    res.render("games", { data: rows });
+    // Map the data to format the date
+    let formattedData = rows.map((row) => ({
+      ...row,
+      Date: row.Date.toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      }),
+    }));
+    res.render("games/games", { data: formattedData });
   });
 });
 
 app.get("/stats", function (req, res) {
   let query1 = `SELECT Games.date as Date, Players.playerName as Name,
-  point as Points, assist as Assists, rebound as Rebounds, CONCAT(fgMake, '/', fgAttempt) as 'FGM/FGA', CONCAT(ftMake, '/', ftAttempt) as 'FTM/FTA', CONCAT(threePointMake, '/', threePointAttempt) as '3PM/3PA', block as Blocks, steal as Steals, playerFoul as Fouls, playerMinute as Minutes 
+  point as Points, assist as Assists, rebound as Rebounds, CONCAT(fgMake, '/', fgAttempt) as 'FieldGoals', CONCAT(ftMake, '/', ftAttempt) as 'FreeThrows', CONCAT(threePointMake, '/', threePointAttempt) as 'ThreePoints', block as Blocks, steal as Steals, playerFoul as Fouls, playerMinute as Minutes 
   FROM PlayersGamesStats 
   JOIN Players ON PlayersGamesStats.playerID = Players.playerID
   JOIN Games ON PlayersGamesStats.gameID = Games.gameID;`;
   db.pool.query(query1, function (error, rows, fields) {
-    res.render("stats", { data: rows });
+    // Map the data to format the date
+    let formattedData = rows.map((row) => ({
+      ...row,
+      Date: row.Date.toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      }),
+    }));
+    res.render("stats/stats", { data: formattedData });
   });
 });
 
 app.get("/teams/create", function (req, res) {
-  let query1 = `CREATE TABLE Teams (
-    teamID INT AUTO_INCREMENT UNIQUE NOT NULL,
-    teamName varchar(70) UNIQUE NOT NULL,
-    city varchar(70) NOT NULL,
-    PRIMARY KEY (teamID));`;
   db.pool.query(query1, function (error, rows, fields) {
     res.render("teams/addteam");
   });
