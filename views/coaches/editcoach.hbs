@@ -1,0 +1,57 @@
+<h1>Coaches</h1>
+<nav>
+    <a href="/">Home</a>
+    <a href="../players">Players</a>
+    <a href="../coaches">Coaches</a>
+    <a href="../teams">Teams</a>
+    <a href="../games">Games</a>
+    <a href="../stats">Stats</a>
+</nav>
+<br />
+ <h2>Editing Coach:</h2>
+    <form id="coach-edit-form">
+      <div class="form-container">
+        {{#if data}}
+        <label for="id">ID:</label>
+        <input type="text" name="id" id="input-id" value="{{data.[0].ID}}" disabled/>
+        <br />
+        <label for="name">Coach Name:</label>
+        <input type="text" name="name" id="input-cname" value="{{data.[0].Name}}"/>
+        <br />
+
+        <label for="height">Coaching Style:</label>
+        <input type="text" name="style" id="input-style" value="{{data.[0].Style}}" />
+        <br />
+
+        <label for="position">Years of Experience:</label>
+        <input type="number" name="years" id="input-experience" value="{{data.[0].Experience}}" />
+        <br />
+
+        <label for="number">Total Wins:</label>
+        <input type="number" name="win" id="input-win" value="{{data.[0].Wins}}" />
+        <br />
+
+        <label for="number">Total Losses:</label>
+        <input type="number" name="loss" id="input-loss" value="{{data.[0].Losses}}" />
+        <br />
+        
+        <label for="teams">Team:</label>
+        <select name="teams" id="input-teamID">
+            {{#if (eq data.[0].Team null)}}
+            <option value="none" selected hidden>None</option>
+            {{else}}
+            <option value="{{data.[0].teamID}}" selected hidden>{{data.[0].teamName}}</option>
+            {{/if}}
+            <option value="none">None</option>
+            {{#each teams}}
+            <option value="{{this.ID}}">{{this.Name}}</option>
+            {{/each}}
+        </select>
+        {{/if}}
+        </div>
+        <div class="button-container">
+          <a href="/coaches"><button type="button" class="back button">Back</a></button>
+          <input class="submit button" type="submit" />
+        </div>
+    </form>
+<script src="/js/edit_coach.js"></script>

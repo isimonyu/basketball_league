@@ -8,8 +8,7 @@
     <a href="stats">Stats</a>
 </nav>
 <br />
-<br />
-    <a href="create.html"><button class="add button">Add New</button></a>
+    <a href="/coaches/create"><button class="add button">Add New</button></a>
 <br />
 <div class="table-container">
 <table>
@@ -28,20 +27,31 @@
             <td>{{this.ID}}</td>
             <td>{{this.Name}}</td>
             <td>{{this.Style}}</td>
-            <td>{{this.Experience}}</td>
+            <td>{{this.Experience}} years</td>
             <td>{{this.Wins}}</td>
             <td>{{this.Losses}}</td>
-            <td>{{this.Team}}</td>
             <td>
-          <a href="edit.html"
-            ><button class="table-buttons edit">Edit</button></a
-          >
-        </td>
-        <td>
-          <button class="table-buttons delete">Delete</button>
-        </td>
+                {{#if (eq this.Team null)}}
+                None
+                {{else}}
+                {{this.Team}}
+                {{/if}}
+            </td>
+            <td>
+              <button 
+                class="table-buttons edit"
+                onclick="editCoach('{{this.ID}}')"
+              >Edit</button>
+            </td>
+            <td>
+              <button 
+              class="table-buttons delete"
+              onclick="deleteCoach('{{this.ID}}', '{{this.Name}}')"
+              >Delete</button>
+            </td>
         </tr>
         {{/each}}
     </tbody>
 </table>
+<script src="/js/update_coach.js"></script>
 </div>

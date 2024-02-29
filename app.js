@@ -51,7 +51,7 @@ app.get("/players/create", function (req, res) {
 
 app.post("/players/create", function (req, res) {
   let data = req.body;
-  query1 = `INSERT INTO Players(playerName, playerHeight, playerPosition, playerNumber, teamID)
+  let query1 = `INSERT INTO Players(playerName, playerHeight, playerPosition, playerNumber, teamID)
     VALUES ("${data.playerName}", ${parseInt(data.height)}, "${
     data.position
   }", ${parseInt(data.number)}, ${
@@ -133,9 +133,101 @@ app.delete("/players/delete", function (req, res) {
 // Coaches ROUTES
 app.get("/coaches", function (req, res) {
   let query1 =
-    "SELECT coachID as ID, teamName as Team, coachName as Name, coachStyle as Style, yearsEXP as Experience, totalWin as Wins, totalLoss as Losses FROM Coaches JOIN Teams ON Coaches.teamID = Teams.teamID;";
+    "SELECT coachID as ID, coachName as Name, coachStyle as Style, yearsEXP as Experience, totalWin as Wins, totalLoss as Losses, teamName as Team FROM Coaches LEFT JOIN Teams ON Coaches.teamID = Teams.teamID;";
   db.pool.query(query1, function (error, rows, fields) {
     res.render("coaches/coaches", { data: rows });
+  });
+});
+
+app.get("/coaches/create", function (req, res) {
+  // Query Teams to use as dropdown
+  let query1 = `SELECT teamID as ID, teamName as Name, city as City FROM Teams;`;
+  db.pool.query(query1, function (error, rows, fields) {
+    res.render("coaches/addcoach", { data: rows });
+  });
+});
+
+app.post("/coaches/create", function (req, res) {
+  let data = req.body;
+  console.log(data);
+  let query1 = `INSERT INTO Coaches(coachName, coachStyle, yearsEXP, totalWin, totalLoss, teamID)
+  VALUES ("${data.coachName}", "${data.style}", ${parseInt(
+    data.experience
+  )}, ${parseInt(data.win)}, ${parseInt(data.loss)}, ${
+    data.teamID == "none" ? "NULL" : parseInt(data.teamID)
+  });`;
+
+  db.pool.query(query1, function (error, rows, fields) {
+    // Check to see if there was an error
+    if (error) {
+      // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+      console.log(error);
+      res.sendStatus(400);
+    } else {
+      console.log("Coach Added");
+      res.sendStatus(200);
+    }
+  });
+});
+
+app.get("/coaches/edit/:_coachID", function (req, res) {
+  // Query to get player information
+  let query1 = `SELECT coachID as ID, coachName as Name, coachStyle as Style, yearsEXP as Experience, totalWin as Wins, totalLoss as Losses, teamName as teamName, Coaches.teamID as teamID FROM Coaches LEFT JOIN Teams ON Coaches.teamID = Teams.teamID WHERE coachID = ${req.params._coachID};`;
+  // Query for Team dropdown
+  let query2 = `SELECT teamID as ID, teamName as Name, city as City FROM Teams;`;
+  db.pool.query(query1, function (error, rows, fields) {
+    if (error) {
+      console.log(error);
+      res.sendStatus(400);
+    } else {
+      console.log(rows);
+      let coach = rows;
+      db.pool.query(query2, function (error, rows, fields) {
+        if (error) {
+          console.log(error);
+          res.sendStatus(400);
+        } else {
+          res.render("coaches/editcoach", { data: coach, teams: rows });
+        }
+      });
+    }
+  });
+});
+
+app.post("/coaches/edit/:_coachID", function (req, res) {
+  let data = req.body;
+  query1 = `UPDATE Coaches
+    SET coachName = "${data.coachName}", coachStyle = "${
+    data.style
+  }", yearsEXP = ${parseInt(data.experience)}, totalWin = ${parseInt(
+    data.win
+  )}, totalLoss = ${parseInt(data.loss)}, teamID = ${
+    data.teamID == "none" ? "NULL" : parseInt(data.teamID)
+  }
+      WHERE coachID = ${req.params._coachID};`;
+  db.pool.query(query1, function (error, rows, fields) {
+    if (error) {
+      console.log(error);
+      res.sendStatus(400);
+    } else {
+      console.log("Updated Coach");
+      res.sendStatus(200);
+    }
+  });
+});
+
+app.delete("/coaches/delete", function (req, res) {
+  let data = req.body;
+
+  query1 = `DELETE FROM Coaches WHERE coachID = "${data.coachID}";`;
+  db.pool.query(query1, function (error, rows, fields) {
+    if (error) {
+      console.log(error);
+      res.sendStatus(400);
+    } else {
+      console.log("Coach Deleted");
+      res.sendStatus(200);
+    }
   });
 });
 
@@ -179,7 +271,6 @@ app.get("/teams/edit/:_teamID", function (req, res) {
       console.log(error);
       res.sendStatus(400);
     } else {
-      console.log(rows);
       res.render("teams/editteam", { data: rows });
     }
   });
