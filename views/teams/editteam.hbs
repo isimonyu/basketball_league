@@ -8,20 +8,24 @@
     <a href="../stats">Stats</a>
 </nav>
 <br />
-<h2>Creating Team:</h2>
-<form id="team-create-form">
+<h2>Editing Team:</h2>
+<form id="team-edit-form">
     <div class="form-container">
+    {{#if data}}
+    <label for="id">ID:</label>
+    <input type="text" name="id" id="input-id" value="{{data.[0].ID}}" disabled/>
+    <br />
     <label for="name">Team Name:</label>
-    <input type="text" name="name" value="Wiz" id="input-tname" />
+    <input type="text" name="name" id="input-tname" value="{{data.[0].Name}}"  />
     <br />
-
     <label for="city">Team Location:</label>
-    <input type="text" name="city" id="input-city" />
+    <input type="text" name="city" id="input-city" value="{{data.[0].City}}" />
     <br />
+    {{/if}}
     </div>
     <div class="button-container">
     <a href="/teams"><button type="button" class="back button">Back</a></button>
     <input class="submit button" type="submit" />
     </div>
 </form>
-<script src="/js/add_team.js"></script>
+<script src="/js/edit_team.js"></script>

@@ -24,18 +24,24 @@
     <tbody>
         {{#each data}}
         <tr>
+            <td>{{this.ID}}</td>
             <td>{{this.Name}}</td>
             <td>{{this.City}}</td>
             <td>
-          <a href="edit.html"
-            ><button class="table-buttons edit">Edit</button></a
-          >
-        </td>
-        <td>
-          <button class="table-buttons delete">Delete</button>
-        </td>
+          <button 
+            class="table-buttons edit"
+            onclick="editTeam('{{this.ID}}')"
+          >Edit</button>
+          </td>
+          <td>
+            <button 
+            class="table-buttons delete"
+            onclick="deleteTeam('{{this.ID}}', '{{this.Name}}')"
+            >Delete</button>
+          </td>
         </tr>
         {{/each}}
     </tbody>
 </table>
+<script src="/js/update_team.js"></script>
 </div>
