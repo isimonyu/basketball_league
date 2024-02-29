@@ -10,7 +10,15 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 const { engine } = require("express-handlebars");
 var exphbs = require("express-handlebars"); // Import express-handlebars
-app.engine(".hbs", engine({ extname: ".hbs" })); // Create an instance of the handlebars engine to process templates
+app.engine(
+  ".hbs",
+  engine({
+    extname: ".hbs",
+    helpers: {
+      eq: (a, b) => a === b,
+    },
+  })
+); // Create an instance of the handlebars engine to process templates
 app.set("view engine", ".hbs"); // Tell express to use the handlebars engine whenever
 PORT = 9124;
 
@@ -27,7 +35,7 @@ app.get("/", function (req, res) {
 // Player ROUTES
 app.get("/players", function (req, res) {
   let query1 =
-    "SELECT playerID as ID, playerName as Name, playerHeight as Height, playerPosition as Position, playerNumber as Number, Teams.teamName as Team FROM Players LEFT JOIN Teams ON Players.teamID = Teams.teamID;";
+    "SELECT playerID as ID, playerName as Name, playerHeight as Height, playerPosition as Position, playerNumber as Number, Teams.teamName as Team, Players.teamID as teamID FROM Players LEFT JOIN Teams ON Players.teamID = Teams.teamID;";
   db.pool.query(query1, function (error, rows, fields) {
     res.render("players/players", { data: rows });
   });
@@ -37,7 +45,7 @@ app.get("/players/create", function (req, res) {
   // Query Teams to use as dropdown
   let query1 = `SELECT teamID as ID, teamName as Name, city as City FROM Teams;`;
   db.pool.query(query1, function (error, rows, fields) {
-    res.render("players/addplayers", { data: rows });
+    res.render("players/addplayer", { data: rows });
   });
 });
 
@@ -46,7 +54,9 @@ app.post("/players/create", function (req, res) {
   query1 = `INSERT INTO Players(playerName, playerHeight, playerPosition, playerNumber, teamID)
     VALUES ("${data.playerName}", ${parseInt(data.height)}, "${
     data.position
-  }", ${parseInt(data.number)}, ${parseInt(data.teamID)});`;
+  }", ${parseInt(data.number)}, ${
+    data.teamID == "none" ? "NULL" : parseInt(data.teamID)
+  });`;
 
   db.pool.query(query1, function (error, rows, fields) {
     // Check to see if there was an error
@@ -92,7 +102,7 @@ app.post("/players/edit/:_playerID", function (req, res) {
     data.height
   )}, playerPosition = "${data.position}", playerNumber = ${parseInt(
     data.number
-  )}, teamID = ${parseInt(data.teamID)}
+  )}, teamID = ${data.teamID == "none" ? "NULL" : parseInt(data.teamID)}
     WHERE playerID = ${req.params._playerID};`;
   db.pool.query(query1, function (error, rows, fields) {
     if (error) {

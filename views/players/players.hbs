@@ -38,7 +38,12 @@
             <td>{{this.Height}}</td>
             <td>{{this.Position}}</td>
             <td>{{this.Number}}</td>
-            <td>{{this.Team}}</td>
+            <td> {{#if (eq this.teamID null)}}
+              None
+              {{else}}
+              {{this.Team}}
+              {{/if}}
+              </td>
             <td>
               <button 
                 class="table-buttons edit"
