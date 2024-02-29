@@ -37,6 +37,7 @@
     <label for="teams">Team:</label>
     <select name="teams" id="input-teamID">
         <option value="" hidden>--Select One--</option>
+        <option value="none">None</option>
         {{#each data}}
         <option value="{{this.ID}}">{{this.Name}}</option>
         {{/each}}

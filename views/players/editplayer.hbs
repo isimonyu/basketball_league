@@ -40,7 +40,12 @@
 
     <label for="teams">Team:</label>
     <select name="teams" id="input-teamID">
-        <option value="{{data.[0].teamID}}" selected>{{data.[0].teamName}}</option>
+        {{#if (eq data.[0].teamID null)}}
+        <option value="none" selected hidden>None</option>
+        {{else}}
+        <option value="{{data.[0].teamID}}" selected hidden>{{data.[0].teamName}}</option>
+        {{/if}}
+        <option value="none">None</option>
         {{#each teams}}
         <option value="{{this.ID}}">{{this.Name}}</option>
         {{/each}}
