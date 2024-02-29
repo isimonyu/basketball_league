@@ -28,17 +28,17 @@
             <td>{{this.Name}}</td>
             <td>{{this.City}}</td>
             <td>
-          <button 
-            class="table-buttons edit"
-            onclick="editTeam('{{this.ID}}')"
-          >Edit</button>
-          </td>
-          <td>
-            <button 
-            class="table-buttons delete"
-            onclick="deleteTeam('{{this.ID}}', '{{this.Name}}')"
-            >Delete</button>
-          </td>
+              <button 
+                class="table-buttons edit"
+                onclick="editTeam('{{this.ID}}')"
+              >Edit</button>
+            </td>
+            <td>
+              <button 
+              class="table-buttons delete"
+              onclick="deleteTeam('{{this.ID}}', '{{this.Name}}')"
+              >Delete</button>
+            </td>
         </tr>
         {{/each}}
     </tbody>

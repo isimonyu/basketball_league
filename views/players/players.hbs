@@ -8,7 +8,7 @@
       <a href="stats">Stats</a>
     </nav>
     <br />
-    <a href="create.html"><button class="add button">Add New</button></a>
+    <a href="/players/create"><button class="add button">Add New</button></a>
     <br />
     <label for="position">Filter by Position:</label>
     <select name="position" id="position">
@@ -40,15 +40,20 @@
             <td>{{this.Number}}</td>
             <td>{{this.Team}}</td>
             <td>
-          <a href="edit.html"
-            ><button class="table-buttons edit">Edit</button></a
-          >
-        </td>
-        <td>
-          <button class="table-buttons delete">Delete</button>
-        </td>
+              <button 
+                class="table-buttons edit"
+                onclick="editPlayer('{{this.ID}}')"
+              >Edit</button>
+            </td>
+            <td>
+              <button 
+              class="table-buttons delete"
+              onclick="deletePlayer('{{this.ID}}', '{{this.Name}}')"
+              >Delete</button>
+            </td>
         </tr>
         {{/each}}
       </tbody>
     </table>
+<script src="/js/update_player.js"></script>
   </div>

@@ -13,13 +13,16 @@ SELECT Queries
 SELECT * FROM Teams;
 
 -- Get Team's name and city by teamID
-SELECT teamName as Name, city as City FROM Teams WHERE teamID = :teamIDInput;
+SELECT teamID as ID, teamName as Name, city as City FROM Teams WHERE teamID = :teamIDInput;
 
 -- Retrieve ALL Players
 SELECT playerID as ID, playerName as Name, playerHeight as Height, playerPosition as Position, playerNumber as Number, Teams.teamName as Team FROM Players LEFT JOIN Teams ON Players.teamID = Teams.teamID;
 
 -- Retrieve ALL Players by teamID
 SELECT playerID as ID, playerName as Name, playerHeight as Height, playerPosition as Position, playerNumber as Number FROM Players LEFT JOIN Teams ON Players.teamID = Teams.teamID WHERE Teams.teamID = :teamIDInput;
+
+-- Retrieve Player by playerID
+SELECT playerID as ID, playerName as Name, playerHeight as Height, playerPosition as Position, playerNumber as Number, teamID FROM Players WHERE playerID = :playerIDInput;
 
 -- Retrieve ALL Players by position
 SELECT playerID as ID, Teams.teamName as Team, playerName as Name, playerHeight as Height, playerPosition as Position, playerNumber as Number FROM Players JOIN Teams ON Players.teamID = Teams.teamID WHERE Players.playerPosition = :playerPositionInput;
@@ -131,7 +134,7 @@ DELETE FROM Players WHERE playerID = :playerIDInput;
 --Updating a player
 UPDATE Players
 SET playerName = :playerNameInput, playerHeight = :playerHeightInput, playerPosition = :playerPositionInput, playerNumber = :playerNumberInput, teamID = :teamIDInput
-WHERE coachID = :coachIDInput;
+WHERE playerID = :playerIDInput;
 -----------------------------------------------------
 
 -- Inserting a new coach
