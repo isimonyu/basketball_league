@@ -1,27 +1,31 @@
 <h1>Players</h1>
 <nav>
     <a href="/">Home</a>
-    <a href="../players">Players</a>
-    <a href="../coaches">Coaches</a>
-    <a href="../teams">Teams</a>
-    <a href="../games">Games</a>
-    <a href="../stats">Stats</a>
+    <a href="/players">Players</a>
+    <a href="/coaches">Coaches</a>
+    <a href="/teams">Teams</a>
+    <a href="/games">Games</a>
+    <a href="/stats">Stats</a>
 </nav>
 <br />
-<h2>Adding Players:</h2>
-<form id="player-create-form">
+<h2>Editing Players:</h2>
+<form id="player-edit-form">
     <div class="form-container">
+    {{#if data}}
+    <label for="id">ID:</label>
+    <input type="text" name="id" id="input-id" value="{{data.[0].ID}}" disabled/>
+    <br />
     <label for="name">Player Name:</label>
-    <input type="text" name="name" id="input-pname" />
+    <input type="text" name="name" id="input-pname" value="{{data.[0].Name}}" />
     <br />
 
     <label for="city">Player Height:</label>
-    <input type="text" name="city" id="input-height" />
+    <input type="text" name="city" id="input-height" value="{{data.[0].Height}}" />
     <br />
 
     <label for="position">Player Position:</label>
     <select name="position" id="input-position">
-      <option value="" hidden>--Select One--</option>
+      <option value="{{data.[0].Position}}" selected hidden>{{data.[0].Position}}</option>
       <option value="point guard">Point Guard</option>
       <option value="shooting guard">Shooting Guard</option>
       <option value="small forward">Small Forward</option>
@@ -31,20 +35,21 @@
     <br />
 
     <label for="number">Player Number:</label>
-    <input type="number" name="number" id="input-number" />
+    <input type="number" name="number" id="input-number" value="{{data.[0].Number}}" />
     <br />
 
     <label for="teams">Team:</label>
     <select name="teams" id="input-teamID">
-        <option value="" hidden>--Select One--</option>
-        {{#each data}}
+        <option value="{{data.[0].teamID}}" selected>{{data.[0].teamName}}</option>
+        {{#each teams}}
         <option value="{{this.ID}}">{{this.Name}}</option>
         {{/each}}
     </select>
+    {{/if}}
     </div>
     <div class="button-container">
     <a href="/players"><button type="button" class="back button">Back</a></button>
     <input class="submit button" type="submit" />
     </div>
 </form>
-<script src="/js/add_player.js"></script>
+<script src="/js/edit_player.js"></script>

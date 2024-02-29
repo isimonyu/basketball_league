@@ -33,6 +33,93 @@ app.get("/players", function (req, res) {
   });
 });
 
+app.get("/players/create", function (req, res) {
+  // Query Teams to use as dropdown
+  let query1 = `SELECT teamID as ID, teamName as Name, city as City FROM Teams;`;
+  db.pool.query(query1, function (error, rows, fields) {
+    res.render("players/addplayers", { data: rows });
+  });
+});
+
+app.post("/players/create", function (req, res) {
+  let data = req.body;
+  query1 = `INSERT INTO Players(playerName, playerHeight, playerPosition, playerNumber, teamID)
+    VALUES ("${data.playerName}", ${parseInt(data.height)}, "${
+    data.position
+  }", ${parseInt(data.number)}, ${parseInt(data.teamID)});`;
+
+  db.pool.query(query1, function (error, rows, fields) {
+    // Check to see if there was an error
+    if (error) {
+      // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+      console.log(error);
+      res.sendStatus(400);
+    } else {
+      console.log("Player Added");
+      res.sendStatus(200);
+    }
+  });
+});
+
+app.get("/players/edit/:_playerID", function (req, res) {
+  // Query to get player information
+  let query1 = `SELECT playerID as ID, playerName as Name, playerHeight as Height, playerPosition as Position, playerNumber as Number, Players.teamID as teamID, teamName FROM Players LEFT JOIN Teams ON Players.teamID = Teams.teamID WHERE playerID = ${req.params._playerID};`;
+  // Query for Team dropdown
+  let query2 = `SELECT teamID as ID, teamName as Name, city as City FROM Teams;`;
+  db.pool.query(query1, function (error, rows, fields) {
+    if (error) {
+      console.log(error);
+      res.sendStatus(400);
+    } else {
+      console.log(rows);
+      let player = rows;
+      db.pool.query(query2, function (error, rows, fields) {
+        if (error) {
+          console.log(error);
+          res.sendStatus(400);
+        } else {
+          res.render("players/editplayer", { data: player, teams: rows });
+        }
+      });
+    }
+  });
+});
+
+app.post("/players/edit/:_playerID", function (req, res) {
+  let data = req.body;
+  query1 = `UPDATE Players
+    SET playerName = "${data.playerName}", playerHeight = ${parseInt(
+    data.height
+  )}, playerPosition = "${data.position}", playerNumber = ${parseInt(
+    data.number
+  )}, teamID = ${parseInt(data.teamID)}
+    WHERE playerID = ${req.params._playerID};`;
+  db.pool.query(query1, function (error, rows, fields) {
+    if (error) {
+      console.log(error);
+      res.sendStatus(400);
+    } else {
+      console.log("Updated Player");
+      res.sendStatus(200);
+    }
+  });
+});
+
+app.delete("/players/delete", function (req, res) {
+  let data = req.body;
+
+  query1 = `DELETE FROM Players WHERE playerID = "${data.playerID}";`;
+  db.pool.query(query1, function (error, rows, fields) {
+    if (error) {
+      console.log(error);
+      res.sendStatus(400);
+    } else {
+      console.log("Player Deleted");
+      res.sendStatus(200);
+    }
+  });
+});
+
 // Coaches ROUTES
 app.get("/coaches", function (req, res) {
   let query1 =
@@ -170,7 +257,7 @@ app.post("/stats/create", function (req, res) {
   let data = req.body;
 
   query1 = `INSERT INTO Stats (date, name, points, assists, rebounds, fieldgoals, freethrows, threepoints, blocks, steals, fouls, minutes)
-    VALUES ("${data.date}", "${data.name}"), "${data.date}", "${data.name}"),"${data.date}", "${data.name}"), `;
+  VALUES ("${data.Date}", "${data.name}", "${data.points}", "${data.assists}", "${data.rebounds}", "${data.FieldGoals}", "${data.FreeThrows}", "${data.ThreePoints}", "${data.Blocks}", "${data.Steals}", "${data.Fouls}", "${data.Minutes}")`;
 
   db.pool.query(query1, function (error, rows, fields) {
     // Check to see if there was an error
