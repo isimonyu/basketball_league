@@ -78,7 +78,7 @@ SELECT coachID as ID, coachName as Name, coachStyle as Style, yearsEXP as Experi
 SELECT coachID as ID, coachName as Name, coachStyle as Style, yearsEXP as Experience, totalWin as Wins, totalLoss as Losses, teamName as Team, Coaches.teamID as teamID FROM Coaches LEFT JOIN Teams ON Coaches.teamID = Teams.teamID WHERE coachID = :coachIDInput;
 
 -- Retrieve All Games information including the home and away team with scores
-SELECT Games.gameID as ID, Games.date as Date, H.teamName as 'Home Team', Games.homeTeamScore as 'Home Score', A.teamName as 'Away Team', Games.awayTeamScore as 'Away Score'
+SELECT Games.gameID as ID, Games.date as Date, H.teamName as HomeTeam, Games.homeTeamScore as HomeScore, A.teamName as AwayTeam, Games.awayTeamScore as AwayScore 
 FROM Games
 JOIN TeamsGames Home ON Games.gameID  = Home.gameID AND Home.isHome = True
 JOIN Teams H ON Home.teamID = H.teamID
@@ -86,7 +86,7 @@ JOIN TeamsGames Away ON Games.gameID  = Away.gameID AND Away.isHome = False
 JOIN Teams A ON Away.teamID = A.teamID;
 
 -- Retrieve Game information including the home and away team with scores by gameID
-SELECT Games.gameID as ID, Games.date as Date, H.teamName as 'Home Team', Games.homeTeamScore as 'Home Score', A.teamName as 'Away Team', Games.awayTeamScore as 'Away Score'
+SELECT Games.gameID as ID, Games.date as Date, H.teamName as HomeTeam, H.teamID as HomeTeamID, Games.homeTeamScore as HomeScore, A.teamName as AwayTeam, A.teamID as AwayTeamID, Games.awayTeamScore as AwayScore
 FROM Games
 JOIN TeamsGames Home ON Games.gameID  = Home.gameID AND Home.isHome = True
 JOIN Teams H ON Home.teamID = H.teamID

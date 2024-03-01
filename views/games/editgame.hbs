@@ -1,0 +1,55 @@
+<h1>Games</h1>
+<nav>
+    <a href="/">Home</a>
+    <a href="/players">Players</a>
+    <a href="/coaches">Coaches</a>
+    <a href="/teams">Teams</a>
+    <a href="/games">Games</a>
+    <a href="/stats">Stats</a>
+</nav>
+<br />
+<h2>Editing Game:</h2>
+<form id="game-edit-form">
+    <div class="form-container">
+    {{#if data}}
+    <label for="id">ID:</label>
+    <input type="text" name="id" id="input-id" value="{{data.[0].ID}}" disabled/>
+    <br />
+
+    <label for="date">Date:</label>
+    <input type="date" name="date" id="input-date" value="{{data.[0].Date}}"/>
+    <br />
+
+    <label for="hometeam">Home Team:</label>
+    <select name="hometeam" id="input-hteamID">
+        <option value="{{data.[0].HomeTeamID}}" selected hidden>{{data.[0].HomeTeam}}</option>
+        {{#each teams}}
+        <option value="{{this.ID}}">{{this.Name}}</option>
+        {{/each}}
+    </select>
+    <br />
+
+    <label for="awayteam">Away Team:</label>
+    <select name="awayteam" id="input-ateamID">
+        <option value="{{data.[0].AwayTeamID}}" selected hidden>{{data.[0].AwayTeam}}</option>
+        {{#each teams}}
+        <option value="{{this.ID}}">{{this.Name}}</option>
+        {{/each}}
+    </select>
+    <br />
+
+    <label for="homescore">Home Score:</label>
+    <input type="number" name="homescore" id="input-hscore" value="{{data.[0].HomeScore}}" />
+    <br />
+
+    <label for="awayscore">Away Score:</label>
+    <input type="number" name="awayscore" id="input-ascore" value="{{data.[0].AwayScore}}" />
+        {{/if}}
+    </div>
+    <div class="button-container">
+    <a href="/games"><button type="button" class="back button">Back</a></button>
+    <input class="submit button" type="submit" />
+    </div>
+</form>
+<script src="/js/edit_game.js"></script>
+
