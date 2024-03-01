@@ -43,8 +43,6 @@ nav > a:hover {
 /*   ----- All tables  -----  */
 
 table {
-    max-width: 100%;
-    overflow-x: scroll;
     border-collapse: collapse;
     margin: 1rem;
 }
@@ -52,8 +50,13 @@ table {
 .table-container {
     display: flex;
     justify-content: center;
+    max-width: 90vw;
+    overflow-x: scroll;
 }
 
+.stats-table {
+  justify-content: left;
+}
 
 th {
     background-color: #f4acb8;
@@ -61,7 +64,7 @@ th {
 
 th, td { 
     text-align: center;
-    padding: 8px;
+    padding: 5px;
     border: 1px solid black;
 }
 

@@ -15,6 +15,7 @@ app.engine(
   engine({
     extname: ".hbs",
     helpers: {
+      // Helper handlebar function to check for equality
       eq: (a, b) => a === b,
     },
   })
