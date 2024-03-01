@@ -9,7 +9,7 @@
     </nav>
     <br />
     <br />
-    <a href="create.html"><button class="add button">Add New</button></a>
+    <a href="/games/create"><button class="add button">Add New</button></a>
 <br />
 <div class="table-container">
 <table>
@@ -32,15 +32,20 @@
             <td>{{this.AwayTeam}}</td>
             <td>{{this.AwayScore}}</td>
             <td>
-          <a href="edit.html"
-            ><button class="table-buttons edit">Edit</button></a
-          >
-        </td>
-        <td>
-          <button class="table-buttons delete">Delete</button>
-        </td>
+              <button 
+                class="table-buttons edit"
+                onclick="editGame('{{this.ID}}')"
+              >Edit</button>
+            </td>
+            <td>
+              <button 
+              class="table-buttons delete"
+              onclick="deleteGame('{{this.ID}}', '{{this.Date}}')"
+              >Delete</button>
+            </td>
         </tr>
         {{/each}}
     </tbody>
 </table>
+<script src="/js/update_game.js"></script>
 </div>

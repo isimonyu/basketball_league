@@ -1,0 +1,50 @@
+<h1>Games</h1>
+<nav>
+    <a href="/">Home</a>
+    <a href="../players">Players</a>
+    <a href="../coaches">Coaches</a>
+    <a href="../teams">Teams</a>
+    <a href="../games">Games</a>
+    <a href="../stats">Stats</a>
+</nav>
+<br />
+<h2>Creating Game:</h2>
+    <form id="game-create-form">
+      <div class="form-container">
+        <label for="date">Date:</label>
+        <input type="date" name="date" id="input-date"/>
+        <br />
+
+        <label for="hometeam">Home Team:</label>
+        <select name="hometeam" id="input-hteamID">
+            <option value="" hidden>--Select One--</option>
+            {{#each data}}
+            <option value="{{this.ID}}">{{this.Name}}</option>
+            {{/each}}
+        </select>
+        <br />
+
+        <label for="awayteam">Away Team:</label>
+        <select name="awayteam" id="input-ateamID">
+            <option value="" hidden>--Select One--</option>
+            {{#each data}}
+            <option value="{{this.ID}}">{{this.Name}}</option>
+            {{/each}}
+        </select>
+        <br />
+
+        <label for="homescore">Home Score:</label>
+        <input type="number" name="homescore" id="input-hscore" />
+        <br />
+
+        <label for="awayscore">Away Score:</label>
+        <input type="number" name="awayscore" id="input-ascore" />
+        <br />
+      </div>
+      <div class="button-container">
+        <a href="/games"><button type="button" class="back button">Back</a></button>
+        <input class="submit button" type="submit" />
+      </div>
+    </form>
+<script src="/js/add_game.js"></script>
+
