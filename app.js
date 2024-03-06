@@ -467,67 +467,84 @@ app.delete("/games/delete", function (req, res) {
 });
 
 // Stats ROUTES
+
+// SELECT
 app.get("/stats", function (req, res) {
   let query1 = `SELECT Games.date as Date, Players.playerName as Name,
   point as Points, assist as Assists, rebound as Rebounds, CONCAT(fgMake, '/', fgAttempt) as 'FieldGoals', CONCAT(ftMake, '/', ftAttempt) as 'FreeThrows', CONCAT(threePointMake, '/', threePointAttempt) as 'ThreePoints', block as Blocks, steal as Steals, playerFoul as Fouls, playerMinute as Minutes 
   FROM PlayersGamesStats 
   JOIN Players ON PlayersGamesStats.playerID = Players.playerID
   JOIN Games ON PlayersGamesStats.gameID = Games.gameID;`;
+  let query2 = `SELECT teamID as ID, teamName as Name, city as City FROM Teams;`;
   db.pool.query(query1, function (error, rows, fields) {
-    // Map the data to format the date
-    let formattedData = rows.map((row) => ({
-      ...row,
-      Date: row.Date.toLocaleDateString("en-US", {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-      }),
-    }));
-    res.render("stats/stats", { data: formattedData });
+    if (error) {
+      console.log(error);
+      res.sendStatus(400);
+    } else {
+      console.log(rows);
+      let player = rows;
+      db.pool.query(query2, function (error, rows, fields) {
+        if (error) {
+          console.log(error);
+          res.sendStatus(400);
+        } else {
+          res.render("stats/stats", { data: player, teams: rows });
+        }
+      });
+    }
   });
 });
 
-app.get("/stats/create", function (req, res) {
-  res.render("stats/addstats");
+
+
+app.post("/stats/create", function (req, res) {
+  let data = req.body;
+  console.log(data);
+
+  // Adding new stats
+  let query1 = `INSERT INTO PlayersGamesStats(gameID, playerID, assist, point, rebound, fgAttempt, fgMake, ftAttempt, ftMake, threePointAttempt, threePointMake, block, steal, playerFoul, playerMinute)
+            VALUES ("${data.gameID}", "${data.playerID}", "${parseInt(data.assists)}", "${parseInt(data.points)}", "${parseInt(data.rebounds)}", "${parseInt(data.FieldGoals)}", "${parseInt(data.FreeThrows)}", "${parseInt(data.ThreePoints)}", "${parseInt(data.Blocks)}", "${parseInt(data.Steals)}", "${parseInt(data.Fouls)}", "${parseInt(data.Minutes)}")`;
+
+  db.pool.query(query1, function (error, rows, fields) {
+    // Check to see if there was an error
+    if (error) {
+    // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+      console.log(error);
+      res.sendStatus(400);
+    } else {
+
+      console.log("Stats Added");
+      res.sendStatus(200);
+    }
+  });
 });
 
-// app.post("/stats/create", function (req, res) {
-//   let data = req.body;
+app.post("/stats/edit/:_statID", function (req, res) {
+  let data = req.body;
 
-//   query1 = `INSERT INTO Stats (date, name, points, assists, rebounds, fieldgoals, freethrows, threepoints, blocks, steals, fouls, minutes)
-//   VALUES ("${data.Date}", "${data.name}", "${data.points}", "${data.assists}", "${data.rebounds}", "${data.FieldGoals}", "${data.FreeThrows}", "${data.ThreePoints}", "${data.Blocks}", "${data.Steals}", "${data.Fouls}", "${data.Minutes}")`;
+  // Updating stats
+  query1 = `UPDATE PlayersGamesStats
+            SET gameID = "${data.gameID}", playerID = "${data.playerID}", assist = "${parseInt(data.assists)}", point = "${parseInt(data.points)}", rebound = "${parseInt(data.rebounds)}", fgAttempt = "${parseInt(data.FieldGoals)}", ftMake = "${parseInt(data.FreeThrows)}", threePoints = "${parseInt(data.ThreePoints)}", block = "${parseInt(data.Blocks)}", steal = "${parseInt(data.Steals)}", playerFoul = "${parseInt(data.Fouls)}", playerMinute = "${parseInt(data.Minutes)}"
+            WHERE gameID = "${data.gameID}"`
+});
 
-//   db.pool.query(query1, function (error, rows, fields) {
-//     // Check to see if there was an error
-//     if (error) {
-//       // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
-//       console.log(error);
-//       res.sendStatus(400);
-//     } else {
-//       console.log("Team Added");
-//       res.sendStatus(200);
-//     }
-//   });
-// });
 
-// app.post("/stats/create", function (req, res) {
-//   let data = req.body;
+  // Deleting Stats
+app.delete("/stats/delete", function (req, res) {
+  let data = req.body;
 
-//   query1 = `UPDATE Stats
-//       SET date = "${data.Date}", name = "${data.name}", points = "${data.points}",  assists = "${data.assists}", rebounds = "${data.rebounds}",
-//       FieldGoals = "${data.FieldGoals}",  FreeThrows = "${data.FreeThrows}", ThreePoints = "${data.ThreePoints}",  Blocks = "${data.Blocks}", Steals = "${data.Steals}",
-//       Fouls = "${data.Fouls}", Minutes = "${data.Minutes}",
-//       WHERE statID = ${req.params._statID};`;
-//   db.pool.query(query1, function (error, rows, fields) {
-//     if (error) {
-//       console.log(error);
-//       res.sendStatus(400);
-//     } else {
-//       console.log("Updated Team");
-//       res.sendStatus(200);
-//     }
-//   });
-// });
+  query1 = `DELETE FROM Stats WHERE statID = "${data.statID}";`;
+  db.pool.query(query1, function (error, rows, fields) {
+    if (error) {
+      console.log(error);
+      res.sendStatus(400);
+    } else {
+      console.log("Player's Stats Deleted");
+      res.sendStatus(200);
+    }
+  });
+});
+
 
 /*
     LISTENER
