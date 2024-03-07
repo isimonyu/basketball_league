@@ -12,8 +12,12 @@
 <form id="stat-edit-form">
     <div class="form-container">
         {{#if data}}
-        <label for="date">ID:</label>
-        <input type="text" name="date" id="input-date" value="{{data.[0].ID}}" disabled/>
+        <label for="playerID">ID:</label>
+        <input type="text" name="ID" id="input-pid" value="{{data.[0].playerID}}" disabled/>
+        <br />
+        
+        <label for="gameID">ID:</label>
+        <input type="text" name="ID" id="input-gid" value="{{data.[0].gameID}}" disabled/>
         <br />
 
         <label for="date">Date:</label>
@@ -79,7 +83,7 @@
         {{/if}}
     </div>
     <div class="button-container">
-        <a href="/coaches"><button type="button" class="back button">Back</button></a>
+        <a href="/stats"><button type="button" class="back button">Back</button></a>
         <input class="submit button" type="submit" />
     </div>
 </form>
