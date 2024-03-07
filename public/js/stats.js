@@ -63,14 +63,14 @@ function validateForm() {
   let inputThreePoint = document.getElementById("input-point").value;
   let inputBlock = document.getElementById("input-assist").value;
   let inputSteal = document.getElementById("input-rebound").value;
-  let inputFoul = document.getElementById("input-fieldgoal").value;
-  let inputMinute = document.getElementById("input-fieldgoal").value;
+  let inputFoul = document.getElementById("input-foul").value;
+  let inputMinute = document.getElementById("input-minute").value;
 
 
-  let playerNameValue = document.getElementById("input-assist").value;
-  let gameIDvalue = document.getElementById("input-rebound").value;
-  let statIDvalue = document.getElementById("input-fieldgoal").value;
-  let teamIDValue = document.getElementById("input-fieldgoal").value;
+  let playerNameValue = document.getElementById("input-pname").value;
+  let gameIDvalue = document.getElementById("input-gameID").value;
+  let statIDvalue = document.getElementById("input-statID").value;
+  let teamIDValue = document.getElementById("input-teamID").value;
   
 
   if (inputPlayerName.length <= 0) {
