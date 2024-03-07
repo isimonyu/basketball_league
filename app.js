@@ -482,20 +482,26 @@ app.get("/stats", function (req, res) {
       res.sendStatus(400);
     } else {
       console.log(rows);
-      let player = rows;
+      // Map the data to format the date
+      let formattedData = rows.map((row) => ({
+        ...row,
+        Date: row.Date.toLocaleDateString("en-US", {
+          month: "short",
+          day: "numeric",
+          year: "numeric",
+        }),
+      }));
       db.pool.query(query2, function (error, rows, fields) {
         if (error) {
           console.log(error);
           res.sendStatus(400);
         } else {
-          res.render("stats/stats", { data: player, teams: rows });
+          res.render("stats/stats", { data: formattedData, teams: rows });
         }
       });
     }
   });
 });
-
-
 
 app.post("/stats/create", function (req, res) {
   let data = req.body;
@@ -503,16 +509,23 @@ app.post("/stats/create", function (req, res) {
 
   // Adding new stats
   let query1 = `INSERT INTO PlayersGamesStats(gameID, playerID, assist, point, rebound, fgAttempt, fgMake, ftAttempt, ftMake, threePointAttempt, threePointMake, block, steal, playerFoul, playerMinute)
-            VALUES ("${data.gameID}", "${data.playerID}", "${parseInt(data.assists)}", "${parseInt(data.points)}", "${parseInt(data.rebounds)}", "${parseInt(data.FieldGoals)}", "${parseInt(data.FreeThrows)}", "${parseInt(data.ThreePoints)}", "${parseInt(data.Blocks)}", "${parseInt(data.Steals)}", "${parseInt(data.Fouls)}", "${parseInt(data.Minutes)}")`;
+            VALUES ("${data.gameID}", "${data.playerID}", "${parseInt(
+    data.assists
+  )}", "${parseInt(data.points)}", "${parseInt(data.rebounds)}", "${parseInt(
+    data.FieldGoals
+  )}", "${parseInt(data.FreeThrows)}", "${parseInt(
+    data.ThreePoints
+  )}", "${parseInt(data.Blocks)}", "${parseInt(data.Steals)}", "${parseInt(
+    data.Fouls
+  )}", "${parseInt(data.Minutes)}")`;
 
   db.pool.query(query1, function (error, rows, fields) {
     // Check to see if there was an error
     if (error) {
-    // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+      // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
       console.log(error);
       res.sendStatus(400);
     } else {
-
       console.log("Stats Added");
       res.sendStatus(200);
     }
@@ -524,12 +537,23 @@ app.post("/stats/edit/:_statID", function (req, res) {
 
   // Updating stats
   query1 = `UPDATE PlayersGamesStats
-            SET gameID = "${data.gameID}", playerID = "${data.playerID}", assist = "${parseInt(data.assists)}", point = "${parseInt(data.points)}", rebound = "${parseInt(data.rebounds)}", fgAttempt = "${parseInt(data.FieldGoals)}", ftMake = "${parseInt(data.FreeThrows)}", threePoints = "${parseInt(data.ThreePoints)}", block = "${parseInt(data.Blocks)}", steal = "${parseInt(data.Steals)}", playerFoul = "${parseInt(data.Fouls)}", playerMinute = "${parseInt(data.Minutes)}"
-            WHERE gameID = "${data.gameID}"`
+            SET gameID = "${data.gameID}", playerID = "${
+    data.playerID
+  }", assist = "${parseInt(data.assists)}", point = "${parseInt(
+    data.points
+  )}", rebound = "${parseInt(data.rebounds)}", fgAttempt = "${parseInt(
+    data.FieldGoals
+  )}", ftMake = "${parseInt(data.FreeThrows)}", threePoints = "${parseInt(
+    data.ThreePoints
+  )}", block = "${parseInt(data.Blocks)}", steal = "${parseInt(
+    data.Steals
+  )}", playerFoul = "${parseInt(data.Fouls)}", playerMinute = "${parseInt(
+    data.Minutes
+  )}"
+            WHERE gameID = "${data.gameID}"`;
 });
 
-
-  // Deleting Stats
+// Deleting Stats
 app.delete("/stats/delete", function (req, res) {
   let data = req.body;
 
@@ -544,7 +568,6 @@ app.delete("/stats/delete", function (req, res) {
     }
   });
 });
-
 
 /*
     LISTENER
