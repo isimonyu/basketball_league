@@ -1,4 +1,4 @@
-<h1>Players</h1>
+<h1>Stats</h1>
 <nav>
     <a href="/">Home</a>
     <a href="/players">Players</a>
@@ -11,50 +11,76 @@
 <h2>Editing Stats:</h2>
 <form id="stat-edit-form">
     <div class="form-container">
-    {{#if data}}
-    <label for="id">ID:</label>
-    <input type="text" name="id" id="input-id" value="{{data.[0].ID}}" disabled/>
-    <br />
-    <label for="name">Player Full Name:</label>
-    <input type="text" name="name" id="input-pname" value="{{data.[0].Name}}" />
-    <br />
+        {{#if data}}
+        <label for="date">ID:</label>
+        <input type="text" name="date" id="input-date" value="{{data.[0].ID}}" disabled/>
+        <br />
 
-    <label for="city">Player Height (Inches):</label>
-    <input type="text" name="city" id="input-height" value="{{data.[0].Height}}" />
-    <br />
+        <label for="date">Date:</label>
+        <input type="text" name="date" id="input-date" value="{{data.[0].Date}}" disabled/>
+        <br />
+        
+        <label for="name">Name:</label>
+        <input type="text" name="name" id="input-name" value="{{data.[0].Name}}"/>
+        <br />
 
-    <label for="position">Player Position:</label>
-    <select name="position" id="input-position">
-      <option value="{{data.[0].Position}}" selected hidden>{{data.[0].Position}}</option>
-      <option value="point guard">Point Guard</option>
-      <option value="shooting guard">Shooting Guard</option>
-      <option value="small forward">Small Forward</option>
-      <option value="power foward">Power Foward</option>
-      <option value="center">Center</option>
-    </select>
-    <br />
+        <label for="points">Player Points:</label>
+        <input type="text" name="points" id="input-points" value="{{data.[0].Points}}" />
+        <br />
 
-    <label for="number">Player Number:</label>
-    <input type="number" name="number" id="input-number" value="{{data.[0].Number}}" />
-    <br />
+        <label for="assists">Player Assists:</label>
+        <input type="number" name="assists" id="input-assists" value="{{data.[0].Assists}}" />
+        <br />
 
-    <label for="teams">Team:</label>
-    <select name="teams" id="input-teamID">
-        {{#if (eq data.[0].teamID null)}}
-        <option value="none" selected hidden>None</option>
-        {{else}}
-        <option value="{{data.[0].teamID}}" selected hidden>{{data.[0].teamName}}</option>
+        <label for="rebounds">Player Rebounds:</label>
+        <input type="number" name="rebounds" id="input-rebounds" value="{{data.[0].Rebounds}}" />
+        <br />
+
+        <label for="fieldGoals">Field Goals:</label>
+        <input type="number" name="fieldGoals" id="input-fieldGoals" value="{{data.[0].FieldGoals}}" />
+        <br />
+
+        <label for="freeThrows">Free Throws:</label>
+        <input type="number" name="freeThrows" id="input-freeThrows" value="{{data.[0].FreeThrows}}" />
+        <br />
+
+        <label for="threePoints">Three Points:</label>
+        <input type="number" name="threePoints" id="input-threePoints" value="{{data.[0].ThreePoints}}" />
+        <br />
+
+        <label for="blocks">Blocks:</label>
+        <input type="number" name="blocks" id="input-blocks" value="{{data.[0].Blocks}}" />
+        <br />
+
+        <label for="steals">Steals:</label>
+        <input type="number" name="steals" id="input-steals" value="{{data.[0].Steals}}" />
+        <br />
+
+        <label for="fouls">Fouls:</label>
+        <input type="number" name="fouls" id="input-fouls" value="{{data.[0].Fouls}}" />
+        <br />
+
+        <label for="minutes">Minutes:</label>
+        <input type="number" name="minutes" id="input-minutes" value="{{data.[0].Minutes}}" />
+        <br />
+
+        <label for="team">Team:</label>
+        <select name="team" id="input-teamID">
+            {{#if (eq data.[0].Team null)}}
+            <option value="none" selected hidden>None</option>
+            {{else}}
+            <option value="{{data.[0].TeamID}}" selected hidden>{{data.[0].TeamName}}</option>
+            {{/if}}
+            <option value="none">None</option>
+            {{#each teams}}
+            <option value="{{this.ID}}">{{this.Name}}</option>
+            {{/each}}
+        </select>
         {{/if}}
-        <option value="none">None</option>
-        {{#each teams}}
-        <option value="{{this.ID}}">{{this.Name}}</option>
-        {{/each}}
-    </select>
-    {{/if}}
     </div>
     <div class="button-container">
-    <a href="/stats"><button type="button" class="back button">Back</a></button>
-    <input class="submit button" type="submit" />
+        <a href="/coaches"><button type="button" class="back button">Back</button></a>
+        <input class="submit button" type="submit" />
     </div>
 </form>
-<script src="/js/stats.js"></script>
+<script src="/js/stat.js"></script>
