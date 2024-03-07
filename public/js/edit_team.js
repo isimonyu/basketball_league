@@ -1,20 +1,35 @@
 let editTeamForm = document.getElementById("team-edit-form");
 
+function validateForm() {
+  let inputTeamName = document.getElementById("input-tname").value;
+  let inputCity = document.getElementById("input-city").value;
+
+  if (inputTeamName == "") {
+    alert(`Team Name cannot be empty.`);
+    return false;
+  }
+  if (inputCity == "") {
+    alert(`Team City cannot be empty.`);
+    return false;
+  }
+  return true;
+}
+
 editTeamForm.addEventListener("submit", async function (e) {
   // Prevent the form from submitting
   e.preventDefault();
 
-  let inputID = document.getElementById("input-id");
-  let inputTeamName = document.getElementById("input-tname");
-  let inputCity = document.getElementById("input-city");
+  let id = document.getElementById("input-id").value;
+  let inputTeamName = document.getElementById("input-tname").value;
+  let inputCity = document.getElementById("input-city").value;
 
-  let id = inputID.value;
-  let teamNameValue = inputTeamName.value;
-  let cityValue = inputCity.value;
+  if (!validateForm()) {
+    return false;
+  }
 
   let data = {
-    teamName: teamNameValue,
-    city: cityValue,
+    teamName: inputTeamName,
+    city: inputCity,
   };
 
   fetch(`/teams/edit/${id}`, {

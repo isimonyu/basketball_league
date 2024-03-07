@@ -1,18 +1,34 @@
 let addTeamForm = document.getElementById("team-create-form");
 
+function validateForm() {
+  let inputTeamName = document.getElementById("input-tname").value;
+  let inputCity = document.getElementById("input-city").value;
+
+  if (inputTeamName == "") {
+    alert(`Team Name cannot be empty.`);
+    return false;
+  }
+  if (inputCity == "") {
+    alert(`Team City cannot be empty.`);
+    return false;
+  }
+  return true;
+}
+
 addTeamForm.addEventListener("submit", async function (e) {
   // Prevent the form from submitting
   e.preventDefault();
 
-  let inputTeamName = document.getElementById("input-tname");
-  let inputCity = document.getElementById("input-city");
+  let inputTeamName = document.getElementById("input-tname").value;
+  let inputCity = document.getElementById("input-city").value;
 
-  let teamNameValue = inputTeamName.value;
-  let cityValue = inputCity.value;
+  if (!validateForm()) {
+    return false;
+  }
 
   let data = {
-    teamName: teamNameValue,
-    city: cityValue,
+    teamName: inputTeamName,
+    city: inputCity,
   };
 
   fetch("/teams/create", {
