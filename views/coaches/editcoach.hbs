@@ -43,16 +43,16 @@
             {{else}}
             <option value="{{data.[0].teamID}}" selected hidden>{{data.[0].teamName}}</option>
             {{/if}}
+        {{/if}}
             <option value="none">None</option>
             {{#each teams}}
             <option value="{{this.ID}}">{{this.Name}}</option>
             {{/each}}
         </select>
-        {{/if}}
         </div>
         <div class="button-container">
           <a href="/coaches"><button type="button" class="back button">Back</a></button>
           <input class="submit button" type="submit" />
         </div>
     </form>
-<script src="/js/coach.js"></script>
+<script src="/js/edit_coach.js"></script>
