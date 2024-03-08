@@ -197,6 +197,7 @@ app.get("/coaches/edit/:_coachID", function (req, res) {
 
 app.post("/coaches/edit/:_coachID", function (req, res) {
   let data = req.body;
+
   query1 = `UPDATE Coaches
     SET coachName = "${data.coachName}", coachStyle = "${
     data.style
@@ -206,6 +207,7 @@ app.post("/coaches/edit/:_coachID", function (req, res) {
     data.teamID == "none" ? "NULL" : parseInt(data.teamID)
   }
       WHERE coachID = ${req.params._coachID};`;
+  console.log(query1);
   db.pool.query(query1, function (error, rows, fields) {
     if (error) {
       console.log(error);

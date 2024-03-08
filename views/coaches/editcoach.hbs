@@ -37,18 +37,18 @@
         <br />
         
         <label for="teams">Team:</label>
-        <select name="teams" id="input-teamID">
-            {{#if (eq data.[0].Team null)}}
+        <select name="teams" id="input-cteamID">
+            {{#if (eq data.[0].teamID null)}}
             <option value="none" selected hidden>None</option>
             {{else}}
             <option value="{{data.[0].teamID}}" selected hidden>{{data.[0].teamName}}</option>
             {{/if}}
-        {{/if}}
             <option value="none">None</option>
             {{#each teams}}
             <option value="{{this.ID}}">{{this.Name}}</option>
             {{/each}}
         </select>
+        {{/if}}
         </div>
         <div class="button-container">
           <a href="/coaches"><button type="button" class="back button">Back</a></button>
