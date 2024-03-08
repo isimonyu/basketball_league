@@ -31,6 +31,7 @@ function validateForm() {
     alert(`Away Score cannot be negative or empty`);
     return false;
   }
+  return true;
 }
 
 editGameForm.addEventListener("submit", async function (e) {
