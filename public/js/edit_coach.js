@@ -6,7 +6,7 @@ function validateForm() {
   let inputExperience = document.getElementById("input-experience").value;
   let inputWin = document.getElementById("input-win").value;
   let inputLoss = document.getElementById("input-loss").value;
-  let inputTeamID = document.getElementById("input-teamID").value;
+  let inputTeamID = document.getElementById("input-cteamID").value;
 
   if (inputCoachName.length <= 0) {
     alert(`Coach name cannot be empty`);
@@ -39,13 +39,13 @@ editCoachForm.addEventListener("submit", async function (e) {
   // Prevent the form from submitting
   e.preventDefault();
 
-  let id = document.getElementById("input-id".value);
+  let id = document.getElementById("input-id").value;
   let inputCoachName = document.getElementById("input-cname").value;
   let inputStyle = document.getElementById("input-style").value;
   let inputExperience = document.getElementById("input-experience").value;
   let inputWin = document.getElementById("input-win").value;
   let inputLoss = document.getElementById("input-loss").value;
-  let inputTeamID = document.getElementById("input-teamID").value;
+  let inputTeamID = document.getElementById("input-cteamID").value;
 
   if (!validateForm()) {
     return false;
@@ -59,8 +59,6 @@ editCoachForm.addEventListener("submit", async function (e) {
     loss: inputLoss,
     teamID: inputTeamID,
   };
-
-  console.log(data);
 
   fetch(`/coaches/edit/${id}`, {
     method: "POST",
