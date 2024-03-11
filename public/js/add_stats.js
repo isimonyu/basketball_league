@@ -106,6 +106,10 @@ addStatsForm.addEventListener("submit", async function (e) {
   let inputSteal = document.getElementById("steal").value;
   let inputFoul = document.getElementById("foul").value;
   let inputMinute = document.getElementById("minute").value;
+
+  if (!validateForm()) {
+    return false;
+  }
   
   let data = {
     playerID: inputPlayerID,
@@ -126,6 +130,8 @@ addStatsForm.addEventListener("submit", async function (e) {
     foul: inputFoul,
     minute: inputMinute,
   };
+
+  
 
   fetch("/stats/create", {
     method: "POST",
