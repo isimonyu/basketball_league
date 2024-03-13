@@ -1,0 +1,85 @@
+<h1>Game Data</h1>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/players">Players</a>
+      <a href="/coaches">Coaches</a>
+      <a href="/teams">Teams</a>
+      <a href="/games">Games</a>
+      <a href="/stats">Stats</a>
+</nav>
+
+{{#if team1}}
+<h2>{{team1.[0].TeamName}}</h2>
+<div class="table-container">
+<table>
+    <tr>
+        {{#each team1.[0]}}
+        {{#if (neq @key "ID")}}
+        {{#if (neq @key "TeamName")}}
+        <th>  
+            {{ @key }}
+        </th>
+            {{/if}}
+            {{/if}}
+        {{/each}}
+    </tr>
+    <tbody>
+        {{#each team1}}
+        {{#if (neq this "TeamName")}}
+        <tr>
+            <td>{{this.Name}}</td>
+            <td>{{this.Points}}</td>
+            <td>{{this.Assists}}</td>
+            <td>{{this.Rebounds}}</td>
+            <td>{{this.FieldGoals}}</td>
+            <td>{{this.FreeThrows}}</td>
+            <td>{{this.ThreePoints}}</td>
+            <td>{{this.Blocks}}</td>
+            <td>{{this.Steals}}</td>
+            <td>{{this.Fouls}}</td>
+            <td>{{this.Minutes}}</td>
+        </tr>
+        {{/if}}
+        {{/each}}
+    </tbody>
+</table>
+</div>
+{{/if}}
+
+{{#if team2}}
+<h2>{{team2.[0].TeamName}}</h2>
+<div class="table-container">
+<table>
+    <tr>
+        {{#each team2.[0]}}
+        {{#if (neq @key "ID")}}
+        {{#if (neq @key "TeamName")}}
+        <th>  
+            {{ @key }}
+        </th>
+            {{/if}}
+            {{/if}}
+        {{/each}}
+    </tr>
+    <tbody>
+        {{#each team2}}
+        {{#if (neq this "TeamName")}}
+        <tr>
+            <td>{{this.Name}}</td>
+            <td>{{this.Points}}</td>
+            <td>{{this.Assists}}</td>
+            <td>{{this.Rebounds}}</td>
+            <td>{{this.FieldGoals}}</td>
+            <td>{{this.FreeThrows}}</td>
+            <td>{{this.ThreePoints}}</td>
+            <td>{{this.Blocks}}</td>
+            <td>{{this.Steals}}</td>
+            <td>{{this.Fouls}}</td>
+            <td>{{this.Minutes}}</td>
+        </tr>
+        {{/if}}
+        {{/each}}
+    </tbody>
+</table>
+</div>
+{{/if}}
