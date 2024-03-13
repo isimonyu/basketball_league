@@ -17,6 +17,7 @@ app.engine(
     helpers: {
       // Helper handlebar function to check for equality
       eq: (a, b) => a === b,
+      neq: (a, b) => a != b,
     },
   })
 ); // Create an instance of the handlebars engine to process templates
