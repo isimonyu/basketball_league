@@ -35,10 +35,45 @@ app.get("/", function (req, res) {
 
 // Player ROUTES
 app.get("/players", function (req, res) {
-  let query1 =
-    "SELECT playerID as ID, playerName as Name, playerHeight as Height, playerPosition as Position, playerNumber as Number, Teams.teamName as Team FROM Players LEFT JOIN Teams ON Players.teamID = Teams.teamID;";
+  let query1; // Filters to be applied
+  let query2 = `SELECT teamID as ID, teamName as Name, city as City FROM Teams;`;
+
+  // Both queries are empty
+  if (
+    (req.query.position === undefined || req.query.position === "") &&
+    (req.query.teams === undefined || req.query.teams === "")
+  ) {
+    query1 =
+      "SELECT playerID as ID, playerName as Name, playerHeight as Height, playerPosition as Position, playerNumber as Number, Teams.teamName as Team FROM Players LEFT JOIN Teams ON Players.teamID = Teams.teamID;";
+  }
+  // Check each query
+  else {
+    // position is undefined, set teams
+    if (req.query.position === undefined || req.query.position === "") {
+      query1 = `SELECT playerID as ID, playerName as Name, playerHeight as Height, playerPosition as Position, playerNumber as Number, Teams.teamName as Team FROM Players LEFT JOIN Teams ON Players.teamID = Teams.teamID WHERE Players.teamID `;
+      req.query.teams == "none"
+        ? (query1 += "is NULL;")
+        : (query1 += `= ${parseInt(req.query.teams)}`);
+    } else if (req.query.teams === undefined || req.query.teams === "") {
+      query1 = `SELECT playerID as ID, playerName as Name, playerHeight as Height, playerPosition as Position, playerNumber as Number, Teams.teamName as Team FROM Players LEFT JOIN Teams ON Players.teamID = Teams.teamID WHERE Players.playerPosition = "${req.query.position}";`;
+    } else {
+      query1 = `SELECT playerID as ID, playerName as Name, playerHeight as Height, playerPosition as Position, playerNumber as Number, Teams.teamName as Team FROM Players LEFT JOIN Teams ON Players.teamID = Teams.teamID WHERE Players.playerPosition = "${req.query.position}" AND Players.teamID `;
+      req.query.teams == "none"
+        ? (query1 += "is NULL;")
+        : (query1 += `= ${parseInt(req.query.teams)}`);
+    }
+  }
+
   db.pool.query(query1, function (error, rows, fields) {
-    res.render("players/players", { data: rows });
+    let players = rows;
+    db.pool.query(query2, function (error, rows, fields) {
+      res.render("players/players", {
+        data: players,
+        teams: rows,
+        pos: req.query.position,
+        team: req.query.teams,
+      });
+    });
   });
 });
 

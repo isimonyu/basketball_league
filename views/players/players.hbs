@@ -1,7 +1,7 @@
 <h1>Players</h1>
     <nav>
       <a href="/">Home</a>
-      <a href="#">Players</a>
+      <a href="players">Players</a>
       <a href="coaches">Coaches</a>
       <a href="teams">Teams</a>
       <a href="games">Games</a>
@@ -9,16 +9,30 @@
     </nav>
     <br />
     <a href="/players/create"><button class="add button">Add New</button></a>
-    {{!-- <br />
-    <label for="position">Filter by Position:</label>
-    <select name="position" id="position">
-      <option value="" disabled hidden>--Select One--</option>
-      <option value="pg" selected>Point Guard</option>
-      <option value="sg">Shooting Guard</option>
-      <option value="sf">Small Forward</option>
-      <option value="pf">Power Foward</option>
-      <option value="c">Center</option>
-    </select> --}}
+    <br />
+    <br />
+    <form method="GET" action="/players">
+      <label for="position">Filter by Position:</label>
+      <select name="position" id="position">
+        <option value="" hidden selected>--Select One--</option>
+        <option value="Point Guard" >Point Guard</option>
+        <option value="Shooting Guard">Shooting Guard</option>
+        <option value="Small Forward">Small Forward</option>
+        <option value="Power Foward">Power Foward</option>
+        <option value="Center">Center</option>
+      </select>
+
+      <label for="teams">Team:</label>
+      <select name="teams">
+          <option value="" hidden>--Select One--</option>
+          <option value="none">None</option>
+          {{#each teams}}
+          <option value="{{this.ID}}">{{this.Name}}</option>
+          {{/each}}
+      </select>
+      
+      <input type="submit">
+    </form>
 <div class="table-container">
     <table>
       <tr>

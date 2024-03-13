@@ -31,3 +31,8 @@ async function deletePlayer(playerID, playerName) {
 async function editPlayer(playerID) {
   window.location.href = `/players/edit/${playerID}`;
 }
+
+let filpos = document.getElementById("position");
+filpos.addEventListener("change", (e) => {
+  console.log(e.target.value);
+});
