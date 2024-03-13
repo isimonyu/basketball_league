@@ -14,9 +14,11 @@
 <table>
     <tr>
         {{#each data.[0]}}
-        <th>
-            {{@key}}
-        </th>
+          {{#if (neq @key "ID")}}
+          <th>  
+            {{ @key }}
+          </th>
+            {{/if}}
         {{/each}}
     <th></th>
     <th></th>
@@ -24,7 +26,6 @@
     <tbody>
         {{#each data}}
         <tr>
-            <td>{{this.ID}}</td>
             <td>{{this.Name}}</td>
             <td>{{this.City}}</td>
             <td>

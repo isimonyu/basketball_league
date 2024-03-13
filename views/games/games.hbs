@@ -8,16 +8,17 @@
     <a href="stats">Stats</a>
     </nav>
     <br />
-    <br />
     <a href="/games/create"><button class="add button">Add New</button></a>
 <br />
 <div class="table-container">
 <table>
     <tr>
         {{#each data.[0]}}
-        <th>
-            {{@key}}
-        </th>
+          {{#if (neq @key "ID")}}
+          <th>  
+            {{ @key }}
+          </th>
+            {{/if}}
         {{/each}}
     <th></th>
     <th></th>
@@ -25,20 +26,19 @@
     <tbody>
         {{#each data}}
         <tr>
-            <td>{{this.ID}}</td>
             <td>{{this.Date}}</td>
             <td>{{this.HomeTeam}}</td>
             <td>{{this.HomeScore}}</td>
             <td>{{this.AwayTeam}}</td>
             <td>{{this.AwayScore}}</td>
             <td>
-              <button 
+              <button
                 class="table-buttons edit"
                 onclick="editGame('{{this.ID}}')"
               >Edit</button>
             </td>
             <td>
-              <button 
+              <button
               class="table-buttons delete"
               onclick="deleteGame('{{this.ID}}', '{{this.Date}}')"
               >Delete</button>
