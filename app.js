@@ -368,6 +368,70 @@ app.get("/games", function (req, res) {
   });
 });
 
+app.get("/games/:_gameID", function (req, res) {
+  // Get two teamIDs
+  let query1 = `SELECT teamID as TeamID FROM TeamsGames WHERE gameID = ${req.params._gameID};`;
+  db.pool.query(query1, function (error, rows, fields) {
+    let team1ID = rows[0].TeamID;
+    let team2ID = rows[1].TeamID;
+    let query2 = `SELECT 
+    PlayersGamesStats.statID AS ID,
+    Players.playerName AS Name,
+    PlayersGamesStats.point AS Points,
+    PlayersGamesStats.assist AS Assists,
+    PlayersGamesStats.rebound AS Rebounds,
+    CONCAT(PlayersGamesStats.fgMake, '/', PlayersGamesStats.fgAttempt) AS FieldGoals,
+    CONCAT(PlayersGamesStats.ftMake, '/', PlayersGamesStats.ftAttempt) AS FreeThrows,
+    CONCAT(PlayersGamesStats.threePointMake, '/', PlayersGamesStats.threePointAttempt) AS ThreePoints,
+    PlayersGamesStats.block AS Blocks,
+    PlayersGamesStats.steal AS Steals,
+    PlayersGamesStats.playerFoul AS Fouls,
+    PlayersGamesStats.playerMinute AS Minutes, 
+    Teams.teamName as TeamName
+FROM 
+    Players
+JOIN 
+    PlayersGamesStats ON Players.playerID = PlayersGamesStats.playerID
+JOIN 
+    Teams ON Players.teamID = Teams.teamID
+JOIN 
+    Games ON PlayersGamesStats.gameID = Games.gameID
+WHERE 
+    Teams.teamID = ${team1ID} and Games.gameID = ${req.params._gameID};`;
+    let query3 = `SELECT 
+    PlayersGamesStats.statID AS ID,
+    Players.playerName AS Name,
+    PlayersGamesStats.point AS Points,
+    PlayersGamesStats.assist AS Assists,
+    PlayersGamesStats.rebound AS Rebounds,
+    CONCAT(PlayersGamesStats.fgMake, '/', PlayersGamesStats.fgAttempt) AS FieldGoals,
+    CONCAT(PlayersGamesStats.ftMake, '/', PlayersGamesStats.ftAttempt) AS FreeThrows,
+    CONCAT(PlayersGamesStats.threePointMake, '/', PlayersGamesStats.threePointAttempt) AS ThreePoints,
+    PlayersGamesStats.block AS Blocks,
+    PlayersGamesStats.steal AS Steals,
+    PlayersGamesStats.playerFoul AS Fouls,
+    PlayersGamesStats.playerMinute AS Minutes, 
+    Teams.teamName as TeamName
+FROM 
+    Players
+JOIN 
+    PlayersGamesStats ON Players.playerID = PlayersGamesStats.playerID
+JOIN 
+    Teams ON Players.teamID = Teams.teamID
+JOIN 
+    Games ON PlayersGamesStats.gameID = Games.gameID
+WHERE 
+    Teams.teamID = ${team2ID} and Games.gameID = ${req.params._gameID};`;
+
+    db.pool.query(query2, function (error, rows, fields) {
+      let team1 = rows;
+      db.pool.query(query3, function (error, rows, fields) {
+        res.render("games/info", { team1: team1, team2: rows });
+      });
+    });
+  });
+});
+
 app.get("/games/create", function (req, res) {
   // Query Teams to use as dropdown
   let query1 = `SELECT teamID as ID, teamName as Name, city as City FROM Teams;`;
@@ -378,7 +442,6 @@ app.get("/games/create", function (req, res) {
 
 app.post("/games/create", function (req, res) {
   let data = req.body;
-  console.log(data);
   let query1 = `INSERT INTO Games(date, homeTeamScore, awayTeamScore)
     VALUES ("${data.date}", ${parseInt(data.homeScore)}, ${parseInt(
     data.awayScore

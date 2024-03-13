@@ -26,7 +26,7 @@
     <tbody>
         {{#each data}}
         <tr>
-            <td>{{this.Date}}</td>
+            <td onclick="getInfo('{{this.ID}}')"><a>{{this.Date}}</a></td>
             <td>{{this.HomeTeam}}</td>
             <td>{{this.HomeScore}}</td>
             <td>{{this.AwayTeam}}</td>

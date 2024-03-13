@@ -31,3 +31,7 @@ async function deleteGame(gameID, gameDate) {
 async function editGame(gameID) {
   window.location.href = `/games/edit/${gameID}`;
 }
+
+async function getInfo(gameID) {
+  window.location.href = `/games/${gameID}`;
+}
