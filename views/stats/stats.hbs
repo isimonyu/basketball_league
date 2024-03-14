@@ -5,13 +5,18 @@
       <a href="coaches">Coaches</a>
       <a href="teams">Teams</a>
       <a href="games">Games</a>
-      <a href="#">Stats</a>
+      <a href="stats">Stats</a>
 </nav>
 <br />
     <a href="/stats/create"><button class="add button">Add New</button></a>
 <br />
-  {{!-- <label for="position"> Filter by Player Name:</label>
-    <input type="text" /> --}}
+<br />
+<form id="search-player" method='GET' action='/stats'>
+    <label for="input-pname">Search by Player's Full Name: </label>
+    <input type="text" name="pname" id="player-searchbar">
+    
+    <input type="submit">
+</form>
 <div class="table-container stats-table">
 <table>
     <tr>

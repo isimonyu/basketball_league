@@ -467,7 +467,6 @@ app.post("/games/create", function (req, res) {
           res.sendStatus(400);
         } else {
           db.pool.query(query3, function (error, rows, fields) {
-            console.log("Coach Added");
             res.sendStatus(200);
           });
         }
@@ -541,7 +540,6 @@ app.get("/games/edit/:_gameID", function (req, res) {
                 console.log(error);
                 res.sendStatus(400);
               } else {
-                console.log("Updated Game");
                 res.sendStatus(200);
               }
             });
@@ -561,7 +559,6 @@ app.delete("/games/delete", function (req, res) {
       console.log(error);
       res.sendStatus(400);
     } else {
-      console.log("Game Deleted");
       res.sendStatus(200);
     }
   });
@@ -571,18 +568,27 @@ app.delete("/games/delete", function (req, res) {
 
 // SELECT
 app.get("/stats", function (req, res) {
-  let query1 = `SELECT Games.date as Date, Players.playerName as Name,
-  point as Points, assist as Assists, rebound as Rebounds, CONCAT(fgMake, '/', fgAttempt) as 'FieldGoals', CONCAT(ftMake, '/', ftAttempt) as 'FreeThrows', CONCAT(threePointMake, '/', threePointAttempt) as 'ThreePoints', block as Blocks, steal as Steals, playerFoul as Fouls, playerMinute as Minutes 
-  FROM PlayersGamesStats 
-  JOIN Players ON PlayersGamesStats.playerID = Players.playerID
-  JOIN Games ON PlayersGamesStats.gameID = Games.gameID;`;
+  let query1;
+  if (req.query.pname === undefined) {
+    query1 = `SELECT Games.date as Date, Players.playerName as Name,
+    point as Points, assist as Assists, rebound as Rebounds, CONCAT(fgMake, '/', fgAttempt) as 'FieldGoals', CONCAT(ftMake, '/', ftAttempt) as 'FreeThrows', CONCAT(threePointMake, '/', threePointAttempt) as 'ThreePoints', block as Blocks, steal as Steals, playerFoul as Fouls, playerMinute as Minutes 
+    FROM PlayersGamesStats 
+    JOIN Players ON PlayersGamesStats.playerID = Players.playerID
+    JOIN Games ON PlayersGamesStats.gameID = Games.gameID;`;
+  } else {
+    query1 = `SELECT Games.date as Date, Players.playerName as Name,
+    point as Points, assist as Assists, rebound as Rebounds, CONCAT(fgMake, '/', fgAttempt) as 'FieldGoals', CONCAT(ftMake, '/', ftAttempt) as 'FreeThrows', CONCAT(threePointMake, '/', threePointAttempt) as 'ThreePoints', block as Blocks, steal as Steals, playerFoul as Fouls, playerMinute as Minutes 
+    FROM PlayersGamesStats 
+    JOIN Players ON PlayersGamesStats.playerID = Players.playerID
+    JOIN Games ON PlayersGamesStats.gameID = Games.gameID 
+    WHERE Players.playerName LIKE "${req.query.pname}";`;
+  }
   let query2 = `SELECT teamID as ID, teamName as Name, city as City FROM Teams;`;
   db.pool.query(query1, function (error, rows, fields) {
     if (error) {
       console.log(error);
       res.sendStatus(400);
     } else {
-      console.log(rows);
       // Map the data to format the date
       let formattedData = rows.map((row) => ({
         ...row,
