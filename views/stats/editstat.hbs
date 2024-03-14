@@ -12,24 +12,29 @@
 <form id="stat-edit-form">
     <div class="form-container">
         {{#if data}}
-        <label for="playerID">ID:</label>
-        <input type="text" name="ID" id="input-pid" value="{{data.[0].playerID}}" disabled/>
-        <br />
-        
-        <label for="gameID">ID:</label>
-        <input type="text" name="ID" id="input-gid" value="{{data.[0].gameID}}" disabled/>
+
+        <label for="date">StatID:</label>
+        <input type="text" name="id" id="input-id" value="{{data.[0].ID}}" disabled/>
         <br />
 
         <label for="date">Date:</label>
         <input type="text" name="date" id="input-date" value="{{data.[0].Date}}" disabled/>
         <br />
         
-        <label for="name">Name:</label>
-        <input type="text" name="name" id="input-name" value="{{data.[0].Name}}"/>
+        <label for="gameID">GameID:</label>
+        <input type="text" name="gid" id="input-gid" value="{{data.[0].gameID}}" disabled/>
+        <br />
+
+        <label for="playerID">PlayerID:</label>
+        <input type="text" name="pid" id="input-pid" value="{{data.[0].playerID}}" disabled/>
+        <br />
+        
+        <label for="name">Player Name:</label>
+        <input type="text" name="name" id="input-name" value="{{data.[0].Name}}" disabled/>
         <br />
 
         <label for="points">Player Points:</label>
-        <input type="text" name="points" id="input-points" value="{{data.[0].Points}}" />
+        <input type="number" name="points" id="input-points" value="{{data.[0].Points}}" />
         <br />
 
         <label for="assists">Player Assists:</label>
@@ -40,16 +45,28 @@
         <input type="number" name="rebounds" id="input-rebounds" value="{{data.[0].Rebounds}}" />
         <br />
 
-        <label for="fieldGoals">Field Goals:</label>
-        <input type="number" name="fieldGoals" id="input-fieldGoals" value="{{data.[0].FieldGoals}}" />
+        <label for="fieldGoals">Field Goals Made:</label>
+        <input type="number" name="fgMake" id="input-fgMake" value="{{data.[0].fgMake}}" />
         <br />
 
-        <label for="freeThrows">Free Throws:</label>
-        <input type="number" name="freeThrows" id="input-freeThrows" value="{{data.[0].FreeThrows}}" />
+        <label for="fieldGoals">Field Goal Attempts:</label>
+        <input type="number" name="fgAttempt" id="input-fgAttempt" value="{{data.[0].fgAttempt}}" />
         <br />
 
-        <label for="threePoints">Three Points:</label>
-        <input type="number" name="threePoints" id="input-threePoints" value="{{data.[0].ThreePoints}}" />
+        <label for="freeThrows">Free Throws Made:</label>
+        <input type="number" name="ftMake" id="input-ftMake" value="{{data.[0].ftMake}}" />
+        <br />
+
+        <label for="freeThrows">Free Throw Attempts:</label>
+        <input type="number" name="ftAttempt" id="input-ftAttempt" value="{{data.[0].ftAttempt}}" />
+        <br />
+
+        <label for="threePoints">Three Points Made:</label>
+        <input type="number" name="threePointMake" id="input-threePointMake" value="{{data.[0].threePointMake}}" />
+        <br />
+
+        <label for="threePoints">Three Point Attempts:</label>
+        <input type="number" name="threePointAttempt" id="input-threePointAttempt" value="{{data.[0].threePointAttempt}}" />
         <br />
 
         <label for="blocks">Blocks:</label>
@@ -68,18 +85,6 @@
         <input type="number" name="minutes" id="input-minutes" value="{{data.[0].Minutes}}" />
         <br />
 
-        <label for="team">Team:</label>
-        <select name="team" id="input-teamID">
-            {{#if (eq data.[0].Team null)}}
-            <option value="none" selected hidden>None</option>
-            {{else}}
-            <option value="{{data.[0].TeamID}}" selected hidden>{{data.[0].TeamName}}</option>
-            {{/if}}
-            <option value="none">None</option>
-            {{#each teams}}
-            <option value="{{this.ID}}">{{this.Name}}</option>
-            {{/each}}
-        </select>
         {{/if}}
     </div>
     <div class="button-container">
@@ -87,4 +92,4 @@
         <input class="submit button" type="submit" />
     </div>
 </form>
-<script src="/js/stat.js"></script>
+<script src="/js/edit_stat.js"></script>

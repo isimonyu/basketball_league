@@ -570,13 +570,13 @@ app.delete("/games/delete", function (req, res) {
 app.get("/stats", function (req, res) {
   let query1;
   if (req.query.pname === undefined) {
-    query1 = `SELECT Games.date as Date, Players.playerName as Name,
+    query1 = `SELECT PlayersGamesStats.statID as ID, PlayersGamesStats.gameID, PlayersGamesStats.playerID, Games.date as Date, Players.playerName as Name,
     point as Points, assist as Assists, rebound as Rebounds, CONCAT(fgMake, '/', fgAttempt) as 'FieldGoals', CONCAT(ftMake, '/', ftAttempt) as 'FreeThrows', CONCAT(threePointMake, '/', threePointAttempt) as 'ThreePoints', block as Blocks, steal as Steals, playerFoul as Fouls, playerMinute as Minutes 
     FROM PlayersGamesStats 
     JOIN Players ON PlayersGamesStats.playerID = Players.playerID
     JOIN Games ON PlayersGamesStats.gameID = Games.gameID;`;
   } else {
-    query1 = `SELECT Games.date as Date, Players.playerName as Name,
+    query1 = `SELECT PlayersGamesStats.statID as ID, PlayersGamesStats.gameID, PlayersGamesStats.playerID, Games.date as Date, Players.playerName as Name,
     point as Points, assist as Assists, rebound as Rebounds, CONCAT(fgMake, '/', fgAttempt) as 'FieldGoals', CONCAT(ftMake, '/', ftAttempt) as 'FreeThrows', CONCAT(threePointMake, '/', threePointAttempt) as 'ThreePoints', block as Blocks, steal as Steals, playerFoul as Fouls, playerMinute as Minutes 
     FROM PlayersGamesStats 
     JOIN Players ON PlayersGamesStats.playerID = Players.playerID
@@ -610,6 +610,14 @@ app.get("/stats", function (req, res) {
   });
 });
 
+app.get("/stats/create", function (req, res) {
+  // Query Games to use as dropdown
+  let query1 = ``;
+  db.pool.query(query1, function (error, rows, fields) {
+    res.render("stats/addstat", { data: rows });
+  });
+});
+
 app.post("/stats/create", function (req, res) {
   let data = req.body;
   console.log(data);
@@ -639,25 +647,50 @@ app.post("/stats/create", function (req, res) {
   });
 });
 
+app.get("/stats/edit/:_statID", function (req, res) {
+  // Query Stat to edit using _statID
+  let query1 = `SELECT PlayersGamesStats.statID as ID, PlayersGamesStats.gameID, PlayersGamesStats.playerID, Games.date as Date, Players.playerName as Name,
+  point as Points, assist as Assists, rebound as Rebounds, fgMake, fgAttempt, ftMake, ftAttempt,threePointMake, threePointAttempt, block as Blocks, steal as Steals, playerFoul as Fouls, playerMinute as Minutes 
+  FROM PlayersGamesStats 
+  JOIN Players ON PlayersGamesStats.playerID = Players.playerID
+  JOIN Games ON PlayersGamesStats.gameID = Games.gameID
+  WHERE PlayersGamesStats.statID = ${parseInt(req.params._statID)}`;
+  db.pool.query(query1, function (error, rows, fields) {
+    res.render("stats/editstat", { data: rows });
+  });
+});
+
 app.post("/stats/edit/:_statID", function (req, res) {
   let data = req.body;
 
   // Updating stats
   query1 = `UPDATE PlayersGamesStats
-            SET gameID = "${data.gameID}", playerID = "${
-    data.playerID
-  }", assist = "${parseInt(data.assists)}", point = "${parseInt(
-    data.points
-  )}", rebound = "${parseInt(data.rebounds)}", fgAttempt = "${parseInt(
-    data.FieldGoals
-  )}", ftMake = "${parseInt(data.FreeThrows)}", threePoints = "${parseInt(
-    data.ThreePoints
-  )}", block = "${parseInt(data.Blocks)}", steal = "${parseInt(
-    data.Steals
-  )}", playerFoul = "${parseInt(data.Fouls)}", playerMinute = "${parseInt(
-    data.Minutes
+            SET assist = "${parseInt(data.assist)}", point = "${parseInt(
+    data.point
+  )}", rebound = "${parseInt(data.rebound)}",fgMake = "${parseInt(
+    data.fieldGoalMake
+  )}", fgAttempt = "${parseInt(data.fieldGoalAttempt)}", ftMake = "${parseInt(
+    data.freeThrowMake
+  )}", ftAttempt = "${parseInt(data.freeThrowAttempt)}", 
+  threePointMake = "${parseInt(
+    data.threePointMake
+  )}", threePointAttempt = "${parseInt(
+    data.threePointAttempt
+  )}", block = "${parseInt(data.block)}", steal = "${parseInt(
+    data.steal
+  )}", playerFoul = "${parseInt(data.foul)}", playerMinute = "${parseInt(
+    data.minute
   )}"
-            WHERE gameID = "${data.gameID}"`;
+  WHERE statID = "${req.params._statID}"`;
+
+  db.pool.query(query1, function (error, rows, fields) {
+    if (error) {
+      console.log(error);
+      res.sendStatus(400);
+    } else {
+      res.sendStatus(200);
+    }
+  });
 });
 
 // Deleting Stats

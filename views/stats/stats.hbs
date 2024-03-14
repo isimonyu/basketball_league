@@ -21,9 +21,15 @@
 <table>
     <tr>
         {{#each data.[0]}}
+          {{#if (neq @key "ID")}}
+            {{#if (neq @key "gameID")}}
+              {{#if (neq @key "playerID")}}
         <th>
             {{@key}}
         </th>
+              {{/if}}
+            {{/if}}
+          {{/if}}
         {{/each}}
     <th></th>
     <th></th>
@@ -44,15 +50,20 @@
             <td>{{this.Fouls}}</td>
             <td>{{this.Minutes}}</td>
             <td>
-          <a href="edit.html"
-            ><button class="table-buttons edit">Edit</button></a
-          >
+              <button 
+                class="table-buttons edit"
+                onclick="editStat('{{this.ID}}')"
+              >Edit</button>
             </td>
-        <td>
-          <button class="table-buttons delete">Delete</button>
-        </td>
+            <td>
+              <button 
+              class="table-buttons delete"
+              onclick="deleteStat('{{this.ID}}', '{{this.Name}}')"
+              >Delete</button>
+            </td>
         </tr>
         {{/each}}
     </tbody>
 </table>
+<script src="/js/update_stat.js"></script>
     </div>
