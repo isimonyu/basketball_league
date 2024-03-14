@@ -56,7 +56,8 @@ SELECT
     PlayersGamesStats.block AS Blocks,
     PlayersGamesStats.steal AS Steals,
     PlayersGamesStats.playerFoul AS Fouls,
-    PlayersGamesStats.playerMinute AS Minutes
+    PlayersGamesStats.playerMinute AS Minutes, 
+    Teams.teamName as TeamName
 FROM 
     Players
 JOIN 
@@ -97,6 +98,8 @@ WHERE Games.gameID = :gameIDInput;
 -- Retrieve ALL Games by teamID
 SELECT * FROM Games JOIN TeamsGames ON Games.gameID = TeamsGames.gameID WHERE TeamsGames.teamID = :teamIDInput;
 
+-- Retrieve teams ids by gameID
+SELECT teamID as TeamID FROM TeamsGames WHERE gameID = :gameIDinput
 
 -----------------------------------------------------
 
