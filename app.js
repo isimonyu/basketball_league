@@ -1,4 +1,5 @@
-// App.js
+// Citation: Adapted starter code on https://github.com/osu-cs340-ecampus/nodejs-starter-app for this app.
+//
 
 /*
     SETUP
@@ -15,8 +16,10 @@ app.engine(
   engine({
     extname: ".hbs",
     helpers: {
+      // Source: https://www.npmjs.com/package/express-handlebars
       // Helper handlebar function to check for equality
       eq: (a, b) => a === b,
+      // Helper handlebar function to check for non-equality
       neq: (a, b) => a != b,
     },
   })
@@ -49,15 +52,19 @@ app.get("/players", function (req, res) {
   }
   // Check each query
   else {
-    // position is undefined, set teams
+    // Position is undefined, set teams
     if (req.query.position === undefined || req.query.position === "") {
       query1 = `SELECT playerID as ID, playerName as Name, playerHeight as Height, playerPosition as Position, playerNumber as Number, Teams.teamName as Team FROM Players LEFT JOIN Teams ON Players.teamID = Teams.teamID WHERE Players.teamID `;
       req.query.teams == "none"
         ? (query1 += "is NULL;")
         : (query1 += `= ${parseInt(req.query.teams)}`);
-    } else if (req.query.teams === undefined || req.query.teams === "") {
+    }
+    // Teams is undefined, set position
+    else if (req.query.teams === undefined || req.query.teams === "") {
       query1 = `SELECT playerID as ID, playerName as Name, playerHeight as Height, playerPosition as Position, playerNumber as Number, Teams.teamName as Team FROM Players LEFT JOIN Teams ON Players.teamID = Teams.teamID WHERE Players.playerPosition = "${req.query.position}";`;
-    } else {
+    }
+    // Both position and team is set
+    else {
       query1 = `SELECT playerID as ID, playerName as Name, playerHeight as Height, playerPosition as Position, playerNumber as Number, Teams.teamName as Team FROM Players LEFT JOIN Teams ON Players.teamID = Teams.teamID WHERE Players.playerPosition = "${req.query.position}" AND Players.teamID `;
       req.query.teams == "none"
         ? (query1 += "is NULL;")
@@ -118,7 +125,6 @@ app.get("/players/edit/:_playerID", function (req, res) {
       console.log(error);
       res.sendStatus(400);
     } else {
-      console.log(rows);
       let player = rows;
       db.pool.query(query2, function (error, rows, fields) {
         if (error) {
