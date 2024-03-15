@@ -20,13 +20,13 @@ SELECT
     playerID as ID, playerName as Name, playerHeight as Height, playerPosition as Position, playerNumber as Number, Teams.teamName as Team FROM Players LEFT JOIN Teams ON Players.teamID = Teams.teamID WHERE Players.teamID;
 
 SELECT 
-    playerID as ID, playerName as Name, playerHeight as Height, playerPosition as Position, playerNumber as Number, Teams.teamName as Team FROM Players LEFT JOIN Teams ON Players.teamID = Teams.teamID WHERE Players.playerPosition = "${req.query.position}"
+    playerID as ID, playerName as Name, playerHeight as Height, playerPosition as Position, playerNumber as Number, Teams.teamName as Team FROM Players LEFT JOIN Teams ON Players.teamID = Teams.teamID WHERE Players.playerPosition = :positionInput
 
 SELECT 
-    playerID as ID, playerName as Name, playerHeight as Height, playerPosition as Position, playerNumber as Number, Teams.teamName as Team FROM Players LEFT JOIN Teams ON Players.teamID = Teams.teamID WHERE Players.playerPosition = "${req.query.position}" AND Players.teamID
+    playerID as ID, playerName as Name, playerHeight as Height, playerPosition as Position, playerNumber as Number, Teams.teamName as Team FROM Players LEFT JOIN Teams ON Players.teamID = Teams.teamID WHERE Players.playerPosition = :positionInput AND Players.teamID
 
 SELECT 
-    playerID as ID, playerName as Name, playerHeight as Height, playerPosition as Position, playerNumber as Number, Players.teamID as teamID, teamName FROM Players LEFT JOIN Teams ON Players.teamID = Teams.teamID WHERE playerID = ${req.params._playerID}
+    playerID as ID, playerName as Name, playerHeight as Height, playerPosition as Position, playerNumber as Number, Players.teamID as teamID, teamName FROM Players LEFT JOIN Teams ON Players.teamID = Teams.teamID WHERE playerID = :playerIDinput
 
 SELECT 
     teamID as ID, teamName as Name, city as City FROM Teams
@@ -35,10 +35,10 @@ SELECT
     coachID as ID, coachName as Name, coachStyle as Style, yearsEXP as Experience, totalWin as Wins, totalLoss as Losses, teamName as Team FROM Coaches LEFT JOIN Teams ON Coaches.teamID = Teams.teamID
 
 SELECT 
-    coachID as ID, coachName as Name, coachStyle as Style, yearsEXP as Experience, totalWin as Wins, totalLoss as Losses, teamName as teamName, Coaches.teamID as teamID FROM Coaches LEFT JOIN Teams ON Coaches.teamID = Teams.teamID WHERE coachID = ${req.params._coachID};
+    coachID as ID, coachName as Name, coachStyle as Style, yearsEXP as Experience, totalWin as Wins, totalLoss as Losses, teamName as teamName, Coaches.teamID as teamID FROM Coaches LEFT JOIN Teams ON Coaches.teamID = Teams.teamID WHERE coachID = :coachIDinput;
 
 SELECT 
-    teamID as ID, teamName as Name, city as City FROM Teams WHERE teamID = ${req.params._teamID};
+    teamID as ID, teamName as Name, city as City FROM Teams WHERE teamID = :teamIDinput;
 
 SELECT 
     Games.gameID as ID, Games.date as Date, H.teamName as 'HomeTeam', Games.homeTeamScore as 'HomeScore', A.teamName as 'AwayTeam', Games.awayTeamScore as 'AwayScore'
@@ -49,7 +49,7 @@ JOIN TeamsGames Away ON Games.gameID  = Away.gameID AND Away.isHome = False
 JOIN Teams A ON Away.teamID = A.teamID;
 
 SELECT 
-    teamID as TeamID FROM TeamsGames WHERE gameID = ${req.params._gameID};
+    teamID as TeamID FROM TeamsGames WHERE gameID = :gameIDinput;
 
 SELECT 
     PlayersGamesStats.statID AS ID,
@@ -74,7 +74,7 @@ JOIN
 JOIN 
     Games ON PlayersGamesStats.gameID = Games.gameID
 WHERE 
-    Teams.teamID = ${team1ID} and Games.gameID = ${req.params._gameID};
+    Teams.teamID =  :team1IDinput and Games.gameID = :gameIDinput;
 
 SELECT 
     PlayersGamesStats.statID AS ID,
@@ -99,7 +99,7 @@ JOIN
 JOIN 
     Games ON PlayersGamesStats.gameID = Games.gameID
 WHERE 
-    Teams.teamID = ${team2ID} and Games.gameID = ${req.params._gameID};
+    Teams.teamID = :team2IDInput and Games.gameID = :gameIDInput;
 
 
 SELECT 
@@ -110,7 +110,7 @@ JOIN TeamsGames Home ON Games.gameID  = Home.gameID AND Home.isHome = True
 JOIN Teams H ON Home.teamID = H.teamID
 JOIN TeamsGames Away ON Games.gameID  = Away.gameID AND Away.isHome = False
 JOIN Teams A ON Away.teamID = A.teamID
-WHERE Games.gameID = ${parseInt(req.params._gameID)};
+WHERE Games.gameID = :gameIDinput;
 
 
 
@@ -126,7 +126,7 @@ SELECT PlayersGamesStats.statID as ID, PlayersGamesStats.gameID, PlayersGamesSta
     FROM PlayersGamesStats 
     JOIN Players ON PlayersGamesStats.playerID = Players.playerID
     JOIN Games ON PlayersGamesStats.gameID = Games.gameID 
-    WHERE Players.playerName LIKE "${req.query.pname}";
+    WHERE Players.playerName LIKE  :playerNameInput;
 
 SELECT 
     Games.gameID as ID, Games.date as Date, H.teamName as 'HomeTeam', H.teamID as 'HomeID', Games.homeTeamScore as 'HomeScore', A.teamName as 'AwayTeam', A.teamID as 'AwayID', Games.awayTeamScore as 'AwayScore'
@@ -137,8 +137,7 @@ JOIN TeamsGames Away ON Games.gameID  = Away.gameID AND Away.isHome = False
 JOIN Teams A ON Away.teamID = A.teamID;
 
 SELECT 
-    playerID as ID, playerName as Name FROM Players where teamID = ${parseInt(
-    formattedData[0].HomeID)} or teamID = ${parseInt(formattedData[0].AwayID)}
+    playerID as ID, playerName as Name FROM Players where teamID =  :homeIDInput or teamID =  :awayIDInput
 
 SELECT 
     PlayersGamesStats.statID as ID, PlayersGamesStats.gameID, PlayersGamesStats.playerID, Games.date as Date, Players.playerName as Name,
@@ -146,7 +145,9 @@ SELECT
 FROM PlayersGamesStats 
 JOIN Players ON PlayersGamesStats.playerID = Players.playerID
 JOIN Games ON PlayersGamesStats.gameID = Games.gameID
-WHERE PlayersGamesStats.statID = ${parseInt(req.params._statID)}
+WHERE PlayersGamesStats.statID =  :statIDInput
+
+
 
 /*
 
