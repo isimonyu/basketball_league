@@ -15,6 +15,7 @@
       <label for="position">Filter by Position:</label>
       <select name="position" id="position">
         <option value="" hidden selected>--Select One--</option>
+        <option value="" >None</option>
         <option value="Point Guard" >Point Guard</option>
         <option value="Shooting Guard">Shooting Guard</option>
         <option value="Small Forward">Small Forward</option>
@@ -25,6 +26,7 @@
       <label for="teams">Team:</label>
       <select name="teams">
           <option value="" hidden>--Select One--</option>
+          <option value="">Clear</option>
           <option value="none">None</option>
           {{#each teams}}
           <option value="{{this.ID}}">{{this.Name}}</option>
