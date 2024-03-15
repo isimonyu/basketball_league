@@ -1,6 +1,6 @@
 async function deleteStat(statID, playerName) {
   let userConfirmation = window.confirm(
-    `Are you sure you want to delete ${playerName} stats?`
+    `Are you sure you want to delete ${playerName}'s stat line?`
   );
   if (userConfirmation) {
     // OK to delete

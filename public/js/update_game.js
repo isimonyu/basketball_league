@@ -33,5 +33,5 @@ async function editGame(gameID) {
 }
 
 async function getInfo(gameID) {
-  window.location.href = `/games/${gameID}`;
+  window.location.href = `/games/stats/${gameID}`;
 }
