@@ -1,6 +1,7 @@
 let editPlayerForm = document.getElementById("stat-edit-form");
 
 function validateForm() {
+  let inputPlayerID = document.getElementById("input-playerID").value;
   let inputPoint = document.getElementById("input-points").value;
   let inputAssist = document.getElementById("input-assists").value;
   let inputRebound = document.getElementById("input-rebounds").value;
@@ -18,7 +19,10 @@ function validateForm() {
   let inputSteal = document.getElementById("input-steals").value;
   let inputFoul = document.getElementById("input-fouls").value;
   let inputMinute = document.getElementById("input-minutes").value;
-
+  if (inputPlayerID == "") {
+    alert(`Player cannot be empty`);
+    return false;
+  }
   if (inputPoint < 0) {
     alert(`Points needs to be positive`);
     return false;
@@ -79,6 +83,8 @@ editPlayerForm.addEventListener("submit", async function (e) {
   // Prevent the form from submitting
   e.preventDefault();
   let id = document.getElementById("input-id").value;
+  let inputGameID = document.getElementById("input-gameID").value;
+  let inputPlayerID = document.getElementById("input-playerID").value;
   let inputPoint = document.getElementById("input-points").value;
   let inputAssist = document.getElementById("input-assists").value;
   let inputRebound = document.getElementById("input-rebounds").value;
@@ -102,6 +108,8 @@ editPlayerForm.addEventListener("submit", async function (e) {
   }
 
   let data = {
+    playerID: inputPlayerID,
+    gameID: inputGameID,
     point: inputPoint,
     assist: inputAssist,
     rebound: inputRebound,

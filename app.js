@@ -702,9 +702,62 @@ app.get("/stats/edit/:_statID", function (req, res) {
   JOIN Players ON PlayersGamesStats.playerID = Players.playerID
   JOIN Games ON PlayersGamesStats.gameID = Games.gameID
   WHERE PlayersGamesStats.statID = ${parseInt(req.params._statID)}`;
+  let data;
   db.pool.query(query1, function (error, rows, fields) {
-    res.render("stats/editstat", { data: rows });
+    data = rows;
   });
+
+  // Get List of Games to choose
+  let query2 = `SELECT Games.gameID as ID, Games.date as Date, H.teamName as 'HomeTeam', H.teamID as 'HomeID', Games.homeTeamScore as 'HomeScore', A.teamName as 'AwayTeam', A.teamID as 'AwayID', Games.awayTeamScore as 'AwayScore'
+  FROM Games
+  JOIN TeamsGames Home ON Games.gameID  = Home.gameID AND Home.isHome = True
+  JOIN Teams H ON Home.teamID = H.teamID
+  JOIN TeamsGames Away ON Games.gameID  = Away.gameID AND Away.isHome = False
+  JOIN Teams A ON Away.teamID = A.teamID`;
+  // Let User change the Game
+  if (req.query.game === undefined) {
+    query1 += ";";
+
+    db.pool.query(query2, function (error, rows, fields) {
+      let formattedData = rows.map((row) => ({
+        ...row,
+        Date: row.Date.toLocaleDateString("en-US", {
+          month: "short",
+          day: "numeric",
+          year: "numeric",
+        }),
+      }));
+      res.render("stats/editstat", { data: data, games: formattedData });
+    });
+  }
+  // Use GameID to find players
+  else {
+    query2 += ` WHERE Games.gameID = ${parseInt(req.query.game)};`;
+    // Use gameID to get players for both Teams
+    db.pool.query(query2, function (error, rows, fields) {
+      let formattedData = rows.map((row) => ({
+        ...row,
+        Date: row.Date.toLocaleDateString("en-US", {
+          month: "short",
+          day: "numeric",
+          year: "numeric",
+        }),
+      }));
+
+      // Get players from both Teams
+      let query2 = `SELECT playerID as ID, playerName as Name FROM Players where teamID = ${parseInt(
+        formattedData[0].HomeID
+      )} or teamID = ${parseInt(formattedData[0].AwayID)};`;
+      db.pool.query(query2, function (error, rows, fields) {
+        res.render("stats/editstat", {
+          games: formattedData,
+          gamePicked: true,
+          players: rows,
+          data: data,
+        });
+      });
+    });
+  }
 });
 
 app.post("/stats/edit/:_statID", function (req, res) {
@@ -712,7 +765,9 @@ app.post("/stats/edit/:_statID", function (req, res) {
 
   // Updating stats
   query1 = `UPDATE PlayersGamesStats
-            SET assist = "${parseInt(data.assist)}", point = "${parseInt(
+            SET playerID = ${parseInt(data.playerID)}, gameID = ${parseInt(
+    data.gameID
+  )},  assist = "${parseInt(data.assist)}", point = "${parseInt(
     data.point
   )}", rebound = "${parseInt(data.rebound)}",fgMake = "${parseInt(
     data.fieldGoalMake
