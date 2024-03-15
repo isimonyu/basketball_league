@@ -9,87 +9,103 @@
 </nav>
 <br />
 <h2>Editing Stats:</h2>
-<form id="stat-edit-form">
-    <div class="form-container">
-        {{#if data}}
+<div class="form-container">
+    {{#if (neq gamePicked true)}}
+        <form action="/stats/edit/{{data.[0].ID}}" method="GET">
+          <label for="game">Confirm the Game to Edit Stat From:</label>
+          <br />
+          <select name="game" id="input-gameID">
+              {{#each games}}
+              {{#if (eq this.ID data.[0].gameID)}}
+              <option value="{{this.ID}}" selected >{{this.Date}} {{this.AwayTeam}} vs {{this.HomeTeam}}</option>
+              {{else}}
+              <option value="{{this.ID}}"  >{{this.Date}} {{this.AwayTeam}} vs {{this.HomeTeam}}</option>
+              {{/if}}
+              {{/each}}
+          </select>
+          <input type="submit"> <br />
+        </form>
+      {{else}}
+    {{#if data}}
+    <form id="stat-edit-form">
+    <label for="date">StatID:</label>
+    <input type="text" name="id" id="input-id" value="{{data.[0].ID}}" disabled/>
+    <br />
 
-        <label for="date">StatID:</label>
-        <input type="text" name="id" id="input-id" value="{{data.[0].ID}}" disabled/>
-        <br />
+    <label for="game">Game:</label>
+    <select name="game" id="input-gameID">
+        {{#each games}}
+        <option value="{{this.ID}}" selected disabled>{{this.Date}} {{this.AwayTeam}} vs {{this.HomeTeam}}</option>
+        {{/each}}          
+    </select>
+    <br />
+    <label for="player">Player:</label>
+    <select name="player" id="input-playerID">
+        <option value="{{data.[0].playerID}}" selected>{{data.[0].Name}}</option>
+        {{#each players}}
+        <option value="{{this.ID}}">{{this.Name}}</option>
+        {{/each}}
+    </select>
+    <br />
+    
+    <label for="points">Player Points:</label>
+    <input type="number" name="points" id="input-points" value="{{data.[0].Points}}" />
+    <br />
 
-        <label for="date">Date:</label>
-        <input type="text" name="date" id="input-date" value="{{data.[0].Date}}" disabled/>
-        <br />
-        
-        <label for="gameID">GameID:</label>
-        <input type="text" name="gid" id="input-gid" value="{{data.[0].gameID}}" disabled/>
-        <br />
+    <label for="assists">Player Assists:</label>
+    <input type="number" name="assists" id="input-assists" value="{{data.[0].Assists}}" />
+    <br />
 
-        <label for="playerID">PlayerID:</label>
-        <input type="text" name="pid" id="input-pid" value="{{data.[0].playerID}}" disabled/>
-        <br />
-        
-        <label for="name">Player Name:</label>
-        <input type="text" name="name" id="input-name" value="{{data.[0].Name}}" disabled/>
-        <br />
+    <label for="rebounds">Player Rebounds:</label>
+    <input type="number" name="rebounds" id="input-rebounds" value="{{data.[0].Rebounds}}" />
+    <br />
 
-        <label for="points">Player Points:</label>
-        <input type="number" name="points" id="input-points" value="{{data.[0].Points}}" />
-        <br />
+    <label for="fieldGoals">Field Goals Made:</label>
+    <input type="number" name="fgMake" id="input-fgMake" value="{{data.[0].fgMake}}" />
+    <br />
 
-        <label for="assists">Player Assists:</label>
-        <input type="number" name="assists" id="input-assists" value="{{data.[0].Assists}}" />
-        <br />
+    <label for="fieldGoals">Field Goal Attempts:</label>
+    <input type="number" name="fgAttempt" id="input-fgAttempt" value="{{data.[0].fgAttempt}}" />
+    <br />
 
-        <label for="rebounds">Player Rebounds:</label>
-        <input type="number" name="rebounds" id="input-rebounds" value="{{data.[0].Rebounds}}" />
-        <br />
+    <label for="freeThrows">Free Throws Made:</label>
+    <input type="number" name="ftMake" id="input-ftMake" value="{{data.[0].ftMake}}" />
+    <br />
 
-        <label for="fieldGoals">Field Goals Made:</label>
-        <input type="number" name="fgMake" id="input-fgMake" value="{{data.[0].fgMake}}" />
-        <br />
+    <label for="freeThrows">Free Throw Attempts:</label>
+    <input type="number" name="ftAttempt" id="input-ftAttempt" value="{{data.[0].ftAttempt}}" />
+    <br />
 
-        <label for="fieldGoals">Field Goal Attempts:</label>
-        <input type="number" name="fgAttempt" id="input-fgAttempt" value="{{data.[0].fgAttempt}}" />
-        <br />
+    <label for="threePoints">Three Points Made:</label>
+    <input type="number" name="threePointMake" id="input-threePointMake" value="{{data.[0].threePointMake}}" />
+    <br />
 
-        <label for="freeThrows">Free Throws Made:</label>
-        <input type="number" name="ftMake" id="input-ftMake" value="{{data.[0].ftMake}}" />
-        <br />
+    <label for="threePoints">Three Point Attempts:</label>
+    <input type="number" name="threePointAttempt" id="input-threePointAttempt" value="{{data.[0].threePointAttempt}}" />
+    <br />
 
-        <label for="freeThrows">Free Throw Attempts:</label>
-        <input type="number" name="ftAttempt" id="input-ftAttempt" value="{{data.[0].ftAttempt}}" />
-        <br />
+    <label for="blocks">Blocks:</label>
+    <input type="number" name="blocks" id="input-blocks" value="{{data.[0].Blocks}}" />
+    <br />
 
-        <label for="threePoints">Three Points Made:</label>
-        <input type="number" name="threePointMake" id="input-threePointMake" value="{{data.[0].threePointMake}}" />
-        <br />
+    <label for="steals">Steals:</label>
+    <input type="number" name="steals" id="input-steals" value="{{data.[0].Steals}}" />
+    <br />
 
-        <label for="threePoints">Three Point Attempts:</label>
-        <input type="number" name="threePointAttempt" id="input-threePointAttempt" value="{{data.[0].threePointAttempt}}" />
-        <br />
+    <label for="fouls">Fouls:</label>
+    <input type="number" name="fouls" id="input-fouls" value="{{data.[0].Fouls}}" />
+    <br />
 
-        <label for="blocks">Blocks:</label>
-        <input type="number" name="blocks" id="input-blocks" value="{{data.[0].Blocks}}" />
-        <br />
+    <label for="minutes">Minutes:</label>
+    <input type="number" name="minutes" id="input-minutes" value="{{data.[0].Minutes}}" />
+    <br />
 
-        <label for="steals">Steals:</label>
-        <input type="number" name="steals" id="input-steals" value="{{data.[0].Steals}}" />
-        <br />
-
-        <label for="fouls">Fouls:</label>
-        <input type="number" name="fouls" id="input-fouls" value="{{data.[0].Fouls}}" />
-        <br />
-
-        <label for="minutes">Minutes:</label>
-        <input type="number" name="minutes" id="input-minutes" value="{{data.[0].Minutes}}" />
-        <br />
-
-        {{/if}}
     </div>
     <div class="button-container">
-        <a href="/stats"><button type="button" class="back button">Back</button></a>
+        <a href="/stats"><button type="button" class="back button">Back</a></button>
         <input class="submit button" type="submit" />
     </div>
 </form>
+    {{/if}}
+    {{/if}}
 <script src="/js/edit_stat.js"></script>
