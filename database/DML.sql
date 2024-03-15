@@ -18,6 +18,9 @@ SELECT teamID as ID, teamName as Name, city as City FROM Teams WHERE teamID = :t
 -- Retrieve ALL Players
 SELECT playerID as ID, playerName as Name, playerHeight as Height, playerPosition as Position, playerNumber as Number, Teams.teamName as Team FROM Players LEFT JOIN Teams ON Players.teamID = Teams.teamID;
 
+-- Retrieve Players for two Teams
+SELECT playerID as ID, playerName as Name FROM Players where teamID = :teamIDInput1 or teamID = :teamIDInput1;
+
 -- Retrieve ALL Players by teamID
 SELECT playerID as ID, playerName as Name, playerHeight as Height, playerPosition as Position, playerNumber as Number FROM Players LEFT JOIN Teams ON Players.teamID = Teams.teamID WHERE Teams.teamID = :teamIDInput;
 

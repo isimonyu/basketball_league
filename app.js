@@ -368,7 +368,7 @@ app.get("/games", function (req, res) {
   });
 });
 
-app.get("/games/:_gameID", function (req, res) {
+app.get("/games/stats/:_gameID", function (req, res) {
   // Get two teamIDs
   let query1 = `SELECT teamID as TeamID FROM TeamsGames WHERE gameID = ${req.params._gameID};`;
   db.pool.query(query1, function (error, rows, fields) {
@@ -569,7 +569,7 @@ app.delete("/games/delete", function (req, res) {
 // SELECT
 app.get("/stats", function (req, res) {
   let query1;
-  if (req.query.pname === undefined) {
+  if (req.query.pname === undefined || req.query.pname === "") {
     query1 = `SELECT PlayersGamesStats.statID as ID, PlayersGamesStats.gameID, PlayersGamesStats.playerID, Games.date as Date, Players.playerName as Name,
     point as Points, assist as Assists, rebound as Rebounds, CONCAT(fgMake, '/', fgAttempt) as 'FieldGoals', CONCAT(ftMake, '/', ftAttempt) as 'FreeThrows', CONCAT(threePointMake, '/', threePointAttempt) as 'ThreePoints', block as Blocks, steal as Steals, playerFoul as Fouls, playerMinute as Minutes 
     FROM PlayersGamesStats 
@@ -611,28 +611,75 @@ app.get("/stats", function (req, res) {
 });
 
 app.get("/stats/create", function (req, res) {
-  // Query Games to use as dropdown
-  let query1 = ``;
-  db.pool.query(query1, function (error, rows, fields) {
-    res.render("stats/addstat", { data: rows });
-  });
+  let query1 = `SELECT Games.gameID as ID, Games.date as Date, H.teamName as 'HomeTeam', H.teamID as 'HomeID', Games.homeTeamScore as 'HomeScore', A.teamName as 'AwayTeam', A.teamID as 'AwayID', Games.awayTeamScore as 'AwayScore'
+  FROM Games
+  JOIN TeamsGames Home ON Games.gameID  = Home.gameID AND Home.isHome = True
+  JOIN Teams H ON Home.teamID = H.teamID
+  JOIN TeamsGames Away ON Games.gameID  = Away.gameID AND Away.isHome = False
+  JOIN Teams A ON Away.teamID = A.teamID`;
+
+  if (req.query.game === undefined) {
+    query1 += ";";
+    // Query Games to use as dropdown
+    db.pool.query(query1, function (error, rows, fields) {
+      let formattedData = rows.map((row) => ({
+        ...row,
+        Date: row.Date.toLocaleDateString("en-US", {
+          month: "short",
+          day: "numeric",
+          year: "numeric",
+        }),
+      }));
+      res.render("stats/addstat", { games: formattedData, gamePicked: false });
+    });
+  }
+  // Game is picked
+  else {
+    query1 += ` WHERE Games.gameID = ${parseInt(req.query.game)};`;
+    // Use gameID to get players for both Teams
+    db.pool.query(query1, function (error, rows, fields) {
+      let formattedData = rows.map((row) => ({
+        ...row,
+        Date: row.Date.toLocaleDateString("en-US", {
+          month: "short",
+          day: "numeric",
+          year: "numeric",
+        }),
+      }));
+
+      // Get players from both Teams
+      let query2 = `SELECT playerID as ID, playerName as Name FROM Players where teamID = ${parseInt(
+        formattedData[0].HomeID
+      )} or teamID = ${parseInt(formattedData[0].AwayID)};`;
+      db.pool.query(query2, function (error, rows, fields) {
+        res.render("stats/addstat", {
+          games: formattedData,
+          gamePicked: true,
+          players: rows,
+        });
+      });
+    });
+  }
 });
 
 app.post("/stats/create", function (req, res) {
   let data = req.body;
-  console.log(data);
 
   // Adding new stats
   let query1 = `INSERT INTO PlayersGamesStats(gameID, playerID, assist, point, rebound, fgAttempt, fgMake, ftAttempt, ftMake, threePointAttempt, threePointMake, block, steal, playerFoul, playerMinute)
             VALUES ("${data.gameID}", "${data.playerID}", "${parseInt(
-    data.assists
-  )}", "${parseInt(data.points)}", "${parseInt(data.rebounds)}", "${parseInt(
-    data.FieldGoals
-  )}", "${parseInt(data.FreeThrows)}", "${parseInt(
-    data.ThreePoints
-  )}", "${parseInt(data.Blocks)}", "${parseInt(data.Steals)}", "${parseInt(
-    data.Fouls
-  )}", "${parseInt(data.Minutes)}")`;
+    data.assist
+  )}", "${parseInt(data.point)}", "${parseInt(data.rebound)}", "${parseInt(
+    data.fieldGoalAttempt
+  )}", "${parseInt(data.fieldGoalMake)}", "${parseInt(
+    data.freeThrowAttempt
+  )}", "${parseInt(data.freeThrowMake)}", "${parseInt(
+    data.threePointAttempt
+  )}", "${parseInt(data.threePointMake)}", "${parseInt(
+    data.block
+  )}", "${parseInt(data.steal)}", "${parseInt(data.foul)}", "${parseInt(
+    data.minute
+  )}")`;
 
   db.pool.query(query1, function (error, rows, fields) {
     // Check to see if there was an error
@@ -697,7 +744,7 @@ app.post("/stats/edit/:_statID", function (req, res) {
 app.delete("/stats/delete", function (req, res) {
   let data = req.body;
 
-  query1 = `DELETE FROM Stats WHERE statID = "${data.statID}";`;
+  query1 = `DELETE FROM PlayersGamesStats WHERE statID = "${data.statID}";`;
   db.pool.query(query1, function (error, rows, fields) {
     if (error) {
       console.log(error);

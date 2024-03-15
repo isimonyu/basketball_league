@@ -10,72 +10,93 @@
     <br />
     <h2>Create Player Stats:</h2>
 
-    <form action="index.html">
-      <div class="form-container">
-        <label for="playerID">Player ID:</label>
-        <input type="text" name="playerID" />
+    <div class="form-container">
+      {{#if (eq gamePicked false)}}
+        <form action="/stats/create" method="GET">
+          <label for="game">Game:</label>
+          <select name="game" id="input-gameID">
+              <option value="" hidden>--Select One--</option>
+              {{#each games}}
+              <option value="{{this.ID}}">{{this.Date}} {{this.AwayTeam}} vs {{this.HomeTeam}}</option>
+              {{/each}}
+          </select>
+          <input type="submit"> <br />
+        </form>
+      {{else}}
+      <form id="stat-create-form">
+      <label for="game">Game:</label>
+        <select name="game" id="input-gameID">
+          {{#each games}}
+            <option value="{{this.ID}}" selected disabled>{{this.Date}} {{this.AwayTeam}} vs {{this.HomeTeam}}</option>
+          {{/each}}          
+        </select>
         <br />
-
-        <label for="gameID">Game ID:</label>
-        <input type="text" name="gameID" />
+        <label for="player">Player:</label>
+        <select name="player" id="input-playerID">
+            <option value="" hidden>--Select One--</option>
+            {{#each players}}
+            <option value="{{this.ID}}">{{this.Name}}</option>
+            {{/each}}
+        </select>
         <br />
 
         <label for="point">Player Points:</label>
-        <input type="text" name="point" />
+        <input type="text" name="point" id="input-points"/>
         <br />
 
         <label for="assist">Player Assists:</label>
-        <input type="text" name="assist" />
+        <input type="text" name="assist" id="input-assists"/>
         <br />
 
         <label for="rebound">Player Rebounds:</label>
-        <input type="text" name="rebound" />
+        <input type="text" name="rebound" id="input-rebounds"/>
         <br />
 
         <label for="fgMake">Player Field Goal Makes:</label>
-        <input type="text" name="fgMake" />
+        <input type="text" name="fgMake" id="input-fgMake"/>
         <br />
 
         <label for="fgAttempt">Player Field Goal Attempts:</label>
-        <input type="text" name="fgAttempt" />
+        <input type="text" name="fgAttempt" id="input-fgAttempt" />
         <br />
 
         <label for="ftMake">Player Free Throw Makes:</label>
-        <input type="text" name="ftMake" />
+        <input type="text" name="ftMake" id="input-ftMake" />
         <br />
 
         <label for="ftAttempt">Player Free Throw Attempts:</label>
-        <input type="text" name="ftAttempt" />
+        <input type="text" name="ftAttempt" id="input-ftAttempt" />
         <br />
 
         <label for="threeMake">Player Three Point Makes:</label>
-        <input type="text" name="threeMake" />
+        <input type="text" name="threeMake" id="input-threePointMake" />
         <br />
 
         <label for="threeAttempt">Player Three Point Attempts:</label>
-        <input type="text" name="threeAttempt" />
+        <input type="text" name="threeAttempt" id="input-threePointAttempt" />
         <br />
 
         <label for="block">Player Blocks:</label>
-        <input type="text" name="block" />
+        <input type="text" name="block" id="input-blocks" />
         <br />
 
         <label for="steal">Player Steals:</label>
-        <input type="text" name="steal" />
+        <input type="text" name="steal" id="input-steals" />
         <br />
 
         <label for="foul">Player Fouls:</label>
-        <input type="text" name="foul" />
+        <input type="text" name="foul" id="input-fouls" />
         <br />
 
         <label for="minute">Player Minutes:</label>
-        <input type="text" name="minute" />
+        <input type="text" name="minute" id="input-minutes" />
         <br />
         <br />
       </div>
       <div class="button-container">
-        <button class="back button"><a href="index.html"> Back</a></button>
+        <a href="/stats"><button type="button" class="back button">Back</a></button>
         <input class="submit button" type="submit" />
-      </div>
+    </div>
     </form>
-    <script src="/js/stats.js"></script>
+  {{/if}}
+    <script src="/js/add_stat.js"></script>

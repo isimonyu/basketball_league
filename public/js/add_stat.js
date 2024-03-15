@@ -1,30 +1,28 @@
 let addStatsForm = document.getElementById("stat-create-form");
 
 function validateForm() {
-  let inputPlayerID = document.getElementById("playerID").value;
-  let inputGameID = document.getElementById("gameID").value;
-  let inputPoint = document.getElementById("point").value;
-  let inputAssist = document.getElementById("assist").value;
-  let inputRebound = document.getElementById("rebound").value;
-  let inputFieldGoalMake = document.getElementById("fgMake").value;
-  let inputFieldGoalAttempt = document.getElementById("fgAttempt").value;
-  let inputFreeThrowMake = document.getElementById("ftMake").value;
-  let inputFreeThrowAttempt = document.getElementById("ftAttempt").value;
-  let inputThreePointMake = document.getElementById("threeMake").value;
-  let inputThreePointAttempt = document.getElementById("threeAttempt").value;
-  let inputBlock = document.getElementById("block").value;
-  let inputSteal = document.getElementById("steal").value;
-  let inputFoul = document.getElementById("foul").value;
-  let inputMinute = document.getElementById("minute").value;
-
+  let inputPlayerID = document.getElementById("input-playerID").value;
+  let inputPoint = document.getElementById("input-points").value;
+  let inputAssist = document.getElementById("input-assists").value;
+  let inputRebound = document.getElementById("input-rebounds").value;
+  let inputFieldGoalMake = document.getElementById("input-fgMake").value;
+  let inputFieldGoalAttempt = document.getElementById("input-fgAttempt").value;
+  let inputFreeThrowMake = document.getElementById("input-ftMake").value;
+  let inputFreeThrowAttempt = document.getElementById("input-ftAttempt").value;
+  let inputThreePointMake = document.getElementById(
+    "input-threePointMake"
+  ).value;
+  let inputThreePointAttempt = document.getElementById(
+    "input-threePointAttempt"
+  ).value;
+  let inputBlock = document.getElementById("input-blocks").value;
+  let inputSteal = document.getElementById("input-steals").value;
+  let inputFoul = document.getElementById("input-fouls").value;
+  let inputMinute = document.getElementById("input-minutes").value;
   if (inputPlayerID == "") {
-    alert(`Player ID cannot be empty`);
+    alert(`Player cannot be empty`);
     return false;
   }
-  if (inputGameID == "") {
-    alert(`Game ID cannot be empty`);
-    return false;
-  }  
   if (inputPoint < 0) {
     alert(`Points needs to be positive`);
     return false;
@@ -78,44 +76,40 @@ function validateForm() {
     return false;
   }
 
-
-  if (inputTeamID == "") {
-    alert(`Team cannot be empty`);
-    return false;
-  }
   return true;
-  
 }
 
 addStatsForm.addEventListener("submit", async function (e) {
   // Prevent the form from submitting
   e.preventDefault();
 
-  let inputPlayerID = document.getElementById("playerID").value;
-  let inputGameID = document.getElementById("gameID").value;
-  let inputPoint = document.getElementById("point").value;
-  let inputAssist = document.getElementById("assist").value;
-  let inputRebound = document.getElementById("rebound").value;
-  let inputFieldGoalMake = document.getElementById("fgMake").value;
-  let inputFieldGoalAttempt = document.getElementById("fgAttempt").value;
-  let inputFreeThrowMake = document.getElementById("ftMake").value;
-  let inputFreeThrowAttempt = document.getElementById("ftAttempt").value;
-  let inputThreePointMake = document.getElementById("threeMake").value;
-  let inputThreePointAttempt = document.getElementById("threeAttempt").value;
-  let inputBlock = document.getElementById("block").value;
-  let inputSteal = document.getElementById("steal").value;
-  let inputFoul = document.getElementById("foul").value;
-  let inputMinute = document.getElementById("minute").value;
+  let inputGameID = document.getElementById("input-gameID").value;
+  let inputPlayerID = document.getElementById("input-playerID").value;
+  let inputPoint = document.getElementById("input-points").value;
+  let inputAssist = document.getElementById("input-assists").value;
+  let inputRebound = document.getElementById("input-rebounds").value;
+  let inputFieldGoalMake = document.getElementById("input-fgMake").value;
+  let inputFieldGoalAttempt = document.getElementById("input-fgAttempt").value;
+  let inputFreeThrowMake = document.getElementById("input-ftMake").value;
+  let inputFreeThrowAttempt = document.getElementById("input-ftAttempt").value;
+  let inputThreePointMake = document.getElementById(
+    "input-threePointMake"
+  ).value;
+  let inputThreePointAttempt = document.getElementById(
+    "input-threePointAttempt"
+  ).value;
+  let inputBlock = document.getElementById("input-blocks").value;
+  let inputSteal = document.getElementById("input-steals").value;
+  let inputFoul = document.getElementById("input-fouls").value;
+  let inputMinute = document.getElementById("input-minutes").value;
 
-  if (!validateForm()) {
-    return false;
-  }
-  
+  // if (!validateForm()) {
+  //   return false;
+  // }
+
   let data = {
     playerID: inputPlayerID,
     gameID: inputGameID,
-    statID: statIDvalue,
-    teamID: teamIDValue,
     point: inputPoint,
     assist: inputAssist,
     rebound: inputRebound,
@@ -130,8 +124,6 @@ addStatsForm.addEventListener("submit", async function (e) {
     foul: inputFoul,
     minute: inputMinute,
   };
-
-  
 
   fetch("/stats/create", {
     method: "POST",
