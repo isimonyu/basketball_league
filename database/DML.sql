@@ -9,53 +9,57 @@ SELECT Queries
 
 */
 
--- Retrieve ALL Teams
-SELECT * FROM Teams;
-
--- Get Team's name and city by teamID
-SELECT teamID as ID, teamName as Name, city as City FROM Teams WHERE teamID = :teamIDInput;
-
--- Retrieve ALL Players
-SELECT playerID as ID, playerName as Name, playerHeight as Height, playerPosition as Position, playerNumber as Number, Teams.teamName as Team FROM Players LEFT JOIN Teams ON Players.teamID = Teams.teamID;
-
--- Retrieve Players for two Teams
-SELECT playerID as ID, playerName as Name FROM Players where teamID = :teamIDInput1 or teamID = :teamIDInput1;
-
--- Retrieve ALL Players by teamID
-SELECT playerID as ID, playerName as Name, playerHeight as Height, playerPosition as Position, playerNumber as Number FROM Players LEFT JOIN Teams ON Players.teamID = Teams.teamID WHERE Teams.teamID = :teamIDInput;
-
--- Retrieve Player by playerID
-SELECT playerID as ID, playerName as Name, playerHeight as Height, playerPosition as Position, playerNumber as Number, teamID FROM Players WHERE playerID = :playerIDInput;
-
--- Retrieve ALL Players by position
-SELECT playerID as ID, Teams.teamName as Team, playerName as Name, playerHeight as Height, playerPosition as Position, playerNumber as Number FROM Players JOIN Teams ON Players.teamID = Teams.teamID WHERE Players.playerPosition = :playerPositionInput;
-
--- Retrieve all Player Stats 
-SELECT Games.date as Date, Players.playerName as Name,
-point as Points, assist as Assists, rebound as Rebounds, CONCAT(fgMake, '/', fgAttempt) as 'FGM/FGA', CONCAT(ftMake, '/', ftAttempt) as 'FTM/FTA', CONCAT(threePointMake, '/', threePointAttempt) as '3PM/3PA', block as Blocks, steal as Steals, playerFoul as Fouls, playerMinute as Minutes 
-FROM PlayersGamesStats 
-JOIN Players ON PlayersGamesStats.playerID = Players.playerID
-JOIN Games ON PlayersGamesStats.gameID = Games.gameID;
-
--- Retrieve all Player Stats by playerName
-SELECT Games.date as Date,
-point as Points, assist as Assists, rebound as Rebounds, CONCAT(fgMake, '/', fgAttempt) as 'FGM/FGA', CONCAT(ftMake, '/', ftAttempt) as 'FTM/FTA', CONCAT(threePointMake, '/', threePointAttempt) as '3PM/3PA', block as Blocks, steal as Steals, playerFoul as Fouls, playerMinute as Minutes 
-FROM PlayersGamesStats 
-JOIN Players ON PlayersGamesStats.playerID = Players.playerID
-JOIN Games ON PlayersGamesStats.gameID = Games.gameID
-WHERE Players.playerName = :playerNameInput;
-
--- Retrieve all Player Stats by teamID and gameID
+/* SELECTS Team Table */
 SELECT 
-    PlayersGamesStats.statID AS "Stat ID",
-    Games.gameID AS "Game ID",
+    teamID as ID, teamName as Name, city as City FROM Teams;
+
+SELECT 
+    playerID as ID, playerName as Name, playerHeight as Height, playerPosition as Position, playerNumber as Number, Teams.teamName as Team FROM Players LEFT JOIN Teams ON Players.teamID = Teams.teamID;
+
+SELECT 
+    playerID as ID, playerName as Name, playerHeight as Height, playerPosition as Position, playerNumber as Number, Teams.teamName as Team FROM Players LEFT JOIN Teams ON Players.teamID = Teams.teamID WHERE Players.teamID;
+
+SELECT 
+    playerID as ID, playerName as Name, playerHeight as Height, playerPosition as Position, playerNumber as Number, Teams.teamName as Team FROM Players LEFT JOIN Teams ON Players.teamID = Teams.teamID WHERE Players.playerPosition = "${req.query.position}"
+
+SELECT 
+    playerID as ID, playerName as Name, playerHeight as Height, playerPosition as Position, playerNumber as Number, Teams.teamName as Team FROM Players LEFT JOIN Teams ON Players.teamID = Teams.teamID WHERE Players.playerPosition = "${req.query.position}" AND Players.teamID
+
+SELECT 
+    playerID as ID, playerName as Name, playerHeight as Height, playerPosition as Position, playerNumber as Number, Players.teamID as teamID, teamName FROM Players LEFT JOIN Teams ON Players.teamID = Teams.teamID WHERE playerID = ${req.params._playerID}
+
+SELECT 
+    teamID as ID, teamName as Name, city as City FROM Teams
+
+SELECT 
+    coachID as ID, coachName as Name, coachStyle as Style, yearsEXP as Experience, totalWin as Wins, totalLoss as Losses, teamName as Team FROM Coaches LEFT JOIN Teams ON Coaches.teamID = Teams.teamID
+
+SELECT 
+    coachID as ID, coachName as Name, coachStyle as Style, yearsEXP as Experience, totalWin as Wins, totalLoss as Losses, teamName as teamName, Coaches.teamID as teamID FROM Coaches LEFT JOIN Teams ON Coaches.teamID = Teams.teamID WHERE coachID = ${req.params._coachID};
+
+SELECT 
+    teamID as ID, teamName as Name, city as City FROM Teams WHERE teamID = ${req.params._teamID};
+
+SELECT 
+    Games.gameID as ID, Games.date as Date, H.teamName as 'HomeTeam', Games.homeTeamScore as 'HomeScore', A.teamName as 'AwayTeam', Games.awayTeamScore as 'AwayScore'
+FROM Games
+JOIN TeamsGames Home ON Games.gameID  = Home.gameID AND Home.isHome = True
+JOIN Teams H ON Home.teamID = H.teamID
+JOIN TeamsGames Away ON Games.gameID  = Away.gameID AND Away.isHome = False
+JOIN Teams A ON Away.teamID = A.teamID;
+
+SELECT 
+    teamID as TeamID FROM TeamsGames WHERE gameID = ${req.params._gameID};
+
+SELECT 
+    PlayersGamesStats.statID AS ID,
     Players.playerName AS Name,
     PlayersGamesStats.point AS Points,
     PlayersGamesStats.assist AS Assists,
     PlayersGamesStats.rebound AS Rebounds,
-    CONCAT(PlayersGamesStats.fgMake, '/', PlayersGamesStats.fgAttempt) AS "FGM/FGA",
-    CONCAT(PlayersGamesStats.ftMake, '/', PlayersGamesStats.ftAttempt) AS "FTM/FTA",
-    CONCAT(PlayersGamesStats.threePointMake, '/', PlayersGamesStats.threePointAttempt) AS "3PM/3PA",
+    CONCAT(PlayersGamesStats.fgMake, '/', PlayersGamesStats.fgAttempt) AS FieldGoals,
+    CONCAT(PlayersGamesStats.ftMake, '/', PlayersGamesStats.ftAttempt) AS FreeThrows,
+    CONCAT(PlayersGamesStats.threePointMake, '/', PlayersGamesStats.threePointAttempt) AS ThreePoints,
     PlayersGamesStats.block AS Blocks,
     PlayersGamesStats.steal AS Steals,
     PlayersGamesStats.playerFoul AS Fouls,
@@ -70,41 +74,79 @@ JOIN
 JOIN 
     Games ON PlayersGamesStats.gameID = Games.gameID
 WHERE 
-    Teams.teamID = :teamIDinput and Games.gameID = :gameIDInput
+    Teams.teamID = ${team1ID} and Games.gameID = ${req.params._gameID};
 
--- Retrieve ALL Coaches
-SELECT coachID as ID, coachName as Name, coachStyle as Style, yearsEXP as Experience, totalWin as Wins, totalLoss as Losses, teamName as Team FROM Coaches LEFT JOIN Teams ON Coaches.teamID = Teams.teamID;
+SELECT 
+    PlayersGamesStats.statID AS ID,
+    Players.playerName AS Name,
+    PlayersGamesStats.point AS Points,
+    PlayersGamesStats.assist AS Assists,
+    PlayersGamesStats.rebound AS Rebounds,
+    CONCAT(PlayersGamesStats.fgMake, '/', PlayersGamesStats.fgAttempt) AS FieldGoals,
+    CONCAT(PlayersGamesStats.ftMake, '/', PlayersGamesStats.ftAttempt) AS FreeThrows,
+    CONCAT(PlayersGamesStats.threePointMake, '/', PlayersGamesStats.threePointAttempt) AS ThreePoints,
+    PlayersGamesStats.block AS Blocks,
+    PlayersGamesStats.steal AS Steals,
+    PlayersGamesStats.playerFoul AS Fouls,
+    PlayersGamesStats.playerMinute AS Minutes, 
+    Teams.teamName as TeamName
+FROM 
+    Players
+JOIN 
+    PlayersGamesStats ON Players.playerID = PlayersGamesStats.playerID
+JOIN 
+    Teams ON Players.teamID = Teams.teamID
+JOIN 
+    Games ON PlayersGamesStats.gameID = Games.gameID
+WHERE 
+    Teams.teamID = ${team2ID} and Games.gameID = ${req.params._gameID};
 
--- Retrieve Coach by teamID
-SELECT coachID as ID, coachName as Name, coachStyle as Style, yearsEXP as Experience, totalWin as Wins, totalLoss as Losses, teamName as Team FROM Coaches JOIN Teams ON Coaches.teamID = Teams.teamID WHERE Coaches.teamID = :teamIDInput;
 
--- Retrieve Coach by coachID
-SELECT coachID as ID, coachName as Name, coachStyle as Style, yearsEXP as Experience, totalWin as Wins, totalLoss as Losses, teamName as Team, Coaches.teamID as teamID FROM Coaches LEFT JOIN Teams ON Coaches.teamID = Teams.teamID WHERE coachID = :coachIDInput;
+SELECT 
+    Games.gameID as ID, Games.date as Date, H.teamName as HomeTeam, H.teamID as HomeTeamID, 
+    Games.homeTeamScore as HomeScore, A.teamName as AwayTeam, A.teamID as AwayTeamID, Games.awayTeamScore as AwayScore
+FROM Games
+JOIN TeamsGames Home ON Games.gameID  = Home.gameID AND Home.isHome = True
+JOIN Teams H ON Home.teamID = H.teamID
+JOIN TeamsGames Away ON Games.gameID  = Away.gameID AND Away.isHome = False
+JOIN Teams A ON Away.teamID = A.teamID
+WHERE Games.gameID = ${parseInt(req.params._gameID)};
 
--- Retrieve All Games information including the home and away team with scores
-SELECT Games.gameID as ID, Games.date as Date, H.teamName as HomeTeam, Games.homeTeamScore as HomeScore, A.teamName as AwayTeam, Games.awayTeamScore as AwayScore 
+
+
+SELECT 
+    PlayersGamesStats.statID as ID, PlayersGamesStats.gameID, PlayersGamesStats.playerID, Games.date as Date, Players.playerName as Name,
+    point as Points, assist as Assists, rebound as Rebounds, CONCAT(fgMake, '/', fgAttempt) as 'FieldGoals', CONCAT(ftMake, '/', ftAttempt) as 'FreeThrows', CONCAT(threePointMake, '/', threePointAttempt) as 'ThreePoints', block as Blocks, steal as Steals, playerFoul as Fouls, playerMinute as Minutes 
+    FROM PlayersGamesStats 
+    JOIN Players ON PlayersGamesStats.playerID = Players.playerID
+    JOIN Games ON PlayersGamesStats.gameID = Games.gameID;
+
+SELECT PlayersGamesStats.statID as ID, PlayersGamesStats.gameID, PlayersGamesStats.playerID, Games.date as Date, Players.playerName as Name,
+    point as Points, assist as Assists, rebound as Rebounds, CONCAT(fgMake, '/', fgAttempt) as 'FieldGoals', CONCAT(ftMake, '/', ftAttempt) as 'FreeThrows', CONCAT(threePointMake, '/', threePointAttempt) as 'ThreePoints', block as Blocks, steal as Steals, playerFoul as Fouls, playerMinute as Minutes 
+    FROM PlayersGamesStats 
+    JOIN Players ON PlayersGamesStats.playerID = Players.playerID
+    JOIN Games ON PlayersGamesStats.gameID = Games.gameID 
+    WHERE Players.playerName LIKE "${req.query.pname}";
+
+SELECT 
+    Games.gameID as ID, Games.date as Date, H.teamName as 'HomeTeam', H.teamID as 'HomeID', Games.homeTeamScore as 'HomeScore', A.teamName as 'AwayTeam', A.teamID as 'AwayID', Games.awayTeamScore as 'AwayScore'
 FROM Games
 JOIN TeamsGames Home ON Games.gameID  = Home.gameID AND Home.isHome = True
 JOIN Teams H ON Home.teamID = H.teamID
 JOIN TeamsGames Away ON Games.gameID  = Away.gameID AND Away.isHome = False
 JOIN Teams A ON Away.teamID = A.teamID;
 
--- Retrieve Game information including the home and away team with scores by gameID
-SELECT Games.gameID as ID, Games.date as Date, H.teamName as HomeTeam, H.teamID as HomeTeamID, Games.homeTeamScore as HomeScore, A.teamName as AwayTeam, A.teamID as AwayTeamID, Games.awayTeamScore as AwayScore
-FROM Games
-JOIN TeamsGames Home ON Games.gameID  = Home.gameID AND Home.isHome = True
-JOIN Teams H ON Home.teamID = H.teamID
-JOIN TeamsGames Away ON Games.gameID  = Away.gameID AND Away.isHome = False
-JOIN Teams A ON Away.teamID = A.teamID
-WHERE Games.gameID = :gameIDInput;
+SELECT 
+    playerID as ID, playerName as Name FROM Players where teamID = ${parseInt(
+    formattedData[0].HomeID)} or teamID = ${parseInt(formattedData[0].AwayID)}
 
--- Retrieve ALL Games by teamID
-SELECT * FROM Games JOIN TeamsGames ON Games.gameID = TeamsGames.gameID WHERE TeamsGames.teamID = :teamIDInput;
-
--- Retrieve teams ids by gameID
-SELECT teamID as TeamID FROM TeamsGames WHERE gameID = :gameIDinput
-
------------------------------------------------------
+SELECT 
+    PlayersGamesStats.statID as ID, PlayersGamesStats.gameID, PlayersGamesStats.playerID, Games.date as Date, Players.playerName as Name,
+    point as Points, assist as Assists, rebound as Rebounds, fgMake, fgAttempt, ftMake, ftAttempt,threePointMake, threePointAttempt, block as Blocks, steal as Steals, playerFoul as Fouls, playerMinute as Minutes 
+FROM PlayersGamesStats 
+JOIN Players ON PlayersGamesStats.playerID = Players.playerID
+JOIN Games ON PlayersGamesStats.gameID = Games.gameID
+WHERE PlayersGamesStats.statID = ${parseInt(req.params._statID)}
 
 /*
 
