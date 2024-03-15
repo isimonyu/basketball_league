@@ -192,7 +192,6 @@ app.get("/coaches/create", function (req, res) {
 
 app.post("/coaches/create", function (req, res) {
   let data = req.body;
-  console.log(data);
   let query1 = `INSERT INTO Coaches(coachName, coachStyle, yearsEXP, totalWin, totalLoss, teamID)
   VALUES ("${data.coachName}", "${data.style}", ${parseInt(
     data.experience
@@ -223,7 +222,6 @@ app.get("/coaches/edit/:_coachID", function (req, res) {
       console.log(error);
       res.sendStatus(400);
     } else {
-      console.log(rows);
       let coach = rows;
       db.pool.query(query2, function (error, rows, fields) {
         if (error) {
@@ -249,7 +247,6 @@ app.post("/coaches/edit/:_coachID", function (req, res) {
     data.teamID == "none" ? "NULL" : parseInt(data.teamID)
   }
       WHERE coachID = ${req.params._coachID};`;
-  console.log(query1);
   db.pool.query(query1, function (error, rows, fields) {
     if (error) {
       console.log(error);
