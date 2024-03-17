@@ -1,5 +1,7 @@
-// Citation: Adapted starter code on https://github.com/osu-cs340-ecampus/nodejs-starter-app for this app.
-//
+// Citation for the following page:
+// Date: 02/20/2024
+// Express setup and query functions are adapted from starter code.
+// Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app
 
 /*
     SETUP
@@ -11,12 +13,16 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 const { engine } = require("express-handlebars");
 var exphbs = require("express-handlebars"); // Import express-handlebars
+
+// Citation for the following function:
+// Date: 3/3/2024
+// Adapted helper functions for handlebars.
+// Source URL: https://www.npmjs.com/package/express-handlebars
 app.engine(
   ".hbs",
   engine({
     extname: ".hbs",
     helpers: {
-      // Source: https://www.npmjs.com/package/express-handlebars
       // Helper handlebar function to check for equality
       eq: (a, b) => a === b,
       // Helper handlebar function to check for non-equality
@@ -25,7 +31,7 @@ app.engine(
   })
 ); // Create an instance of the handlebars engine to process templates
 app.set("view engine", ".hbs"); // Tell express to use the handlebars engine whenever
-PORT = 9124;
+PORT = 8985;
 
 // Database
 var db = require("./database/db-connector");
@@ -306,7 +312,7 @@ app.post("/teams/create", function (req, res) {
 });
 
 app.get("/teams/edit/:_teamID", function (req, res) {
-  // Query to get information
+  // Query to get team data by teamID
   query1 = `SELECT teamID as ID, teamName as Name, city as City FROM Teams WHERE teamID = ${req.params._teamID}`;
   db.pool.query(query1, function (error, rows, fields) {
     if (error) {
@@ -351,6 +357,7 @@ app.delete("/teams/delete", function (req, res) {
 
 // Games ROUTES
 app.get("/games", function (req, res) {
+  // Get both teams involved in games.
   let query1 = `SELECT Games.gameID as ID, Games.date as Date, H.teamName as 'HomeTeam', Games.homeTeamScore as 'HomeScore', A.teamName as 'AwayTeam', Games.awayTeamScore as 'AwayScore'
   FROM Games
   JOIN TeamsGames Home ON Games.gameID  = Home.gameID AND Home.isHome = True
@@ -377,6 +384,7 @@ app.get("/games/stats/:_gameID", function (req, res) {
   db.pool.query(query1, function (error, rows, fields) {
     let team1ID = rows[0].TeamID;
     let team2ID = rows[1].TeamID;
+    // Get first team
     let query2 = `SELECT 
     PlayersGamesStats.statID AS ID,
     Players.playerName AS Name,
@@ -401,6 +409,7 @@ JOIN
     Games ON PlayersGamesStats.gameID = Games.gameID
 WHERE 
     Teams.teamID = ${team1ID} and Games.gameID = ${req.params._gameID};`;
+    // Get second team
     let query3 = `SELECT 
     PlayersGamesStats.statID AS ID,
     Players.playerName AS Name,
@@ -571,14 +580,18 @@ app.delete("/games/delete", function (req, res) {
 
 // SELECT
 app.get("/stats", function (req, res) {
+  // Initialize query to be filtered
   let query1;
+  // No filters
   if (req.query.pname === undefined || req.query.pname === "") {
     query1 = `SELECT PlayersGamesStats.statID as ID, PlayersGamesStats.gameID, PlayersGamesStats.playerID, Games.date as Date, Players.playerName as Name,
     point as Points, assist as Assists, rebound as Rebounds, CONCAT(fgMake, '/', fgAttempt) as 'FieldGoals', CONCAT(ftMake, '/', ftAttempt) as 'FreeThrows', CONCAT(threePointMake, '/', threePointAttempt) as 'ThreePoints', block as Blocks, steal as Steals, playerFoul as Fouls, playerMinute as Minutes 
     FROM PlayersGamesStats 
     JOIN Players ON PlayersGamesStats.playerID = Players.playerID
     JOIN Games ON PlayersGamesStats.gameID = Games.gameID;`;
-  } else {
+  }
+  // Filter by player name
+  else {
     query1 = `SELECT PlayersGamesStats.statID as ID, PlayersGamesStats.gameID, PlayersGamesStats.playerID, Games.date as Date, Players.playerName as Name,
     point as Points, assist as Assists, rebound as Rebounds, CONCAT(fgMake, '/', fgAttempt) as 'FieldGoals', CONCAT(ftMake, '/', ftAttempt) as 'FreeThrows', CONCAT(threePointMake, '/', threePointAttempt) as 'ThreePoints', block as Blocks, steal as Steals, playerFoul as Fouls, playerMinute as Minutes 
     FROM PlayersGamesStats 
@@ -586,7 +599,7 @@ app.get("/stats", function (req, res) {
     JOIN Games ON PlayersGamesStats.gameID = Games.gameID 
     WHERE Players.playerName LIKE "${req.query.pname}";`;
   }
-  let query2 = `SELECT teamID as ID, teamName as Name, city as City FROM Teams;`;
+
   db.pool.query(query1, function (error, rows, fields) {
     if (error) {
       console.log(error);
@@ -601,19 +614,13 @@ app.get("/stats", function (req, res) {
           year: "numeric",
         }),
       }));
-      db.pool.query(query2, function (error, rows, fields) {
-        if (error) {
-          console.log(error);
-          res.sendStatus(400);
-        } else {
-          res.render("stats/stats", { data: formattedData, teams: rows });
-        }
-      });
+      res.render("stats/stats", { data: formattedData });
     }
   });
 });
 
 app.get("/stats/create", function (req, res) {
+  // Get Games to pick from for dropdown
   let query1 = `SELECT Games.gameID as ID, Games.date as Date, H.teamName as 'HomeTeam', H.teamID as 'HomeID', Games.homeTeamScore as 'HomeScore', A.teamName as 'AwayTeam', A.teamID as 'AwayID', Games.awayTeamScore as 'AwayScore'
   FROM Games
   JOIN TeamsGames Home ON Games.gameID  = Home.gameID AND Home.isHome = True
@@ -621,6 +628,7 @@ app.get("/stats/create", function (req, res) {
   JOIN TeamsGames Away ON Games.gameID  = Away.gameID AND Away.isHome = False
   JOIN Teams A ON Away.teamID = A.teamID`;
 
+  // Game is not picked
   if (req.query.game === undefined) {
     query1 += ";";
     // Query Games to use as dropdown
@@ -650,7 +658,7 @@ app.get("/stats/create", function (req, res) {
         }),
       }));
 
-      // Get players from both Teams
+      // Get players from both Teams for drop down
       let query2 = `SELECT playerID as ID, playerName as Name FROM Players where teamID = ${parseInt(
         formattedData[0].HomeID
       )} or teamID = ${parseInt(formattedData[0].AwayID)};`;

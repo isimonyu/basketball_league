@@ -10,12 +10,12 @@
 
 body {
     color: var(--darkColor);
-      font-family:'Kanit', sans-serif;
-      line-height: 150%;
-      margin: 0 5%;
-      padding: 0;
-      max-width: 100%;
-      text-align: center;
+    font-family:'Kanit', sans-serif;
+    line-height: 150%;
+    margin: 0 5%;
+    padding: 0;
+    max-width: 100%;
+    text-align: center;
 }
 
 a {
@@ -97,8 +97,6 @@ th, td {
     color: rgb(86, 116, 116);
 }
     
-
-
   .button {
     color: var(--darkColor);
     font-size: 100%;
