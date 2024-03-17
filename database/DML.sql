@@ -8,6 +8,10 @@
 SELECT Queries
 
 */
+-- Citation for the following queries:
+-- Date: 02/20/2024
+-- All queries are our own work, referenced W3SChools for SQL syntax
+-- Source URL: https://www.w3schools.com/sql/sql_ref_keywords.asp
 
 -- Get all Teams for dropdowns
 SELECT 
